@@ -1,0 +1,27 @@
+nav-item .navItem{
+	cursor: pointer;
+	transition: all 0.2s;
+	padding-bottom: 10px;
+}
+
+nav-item .hotkey{
+	color:grey;
+}
+
+nav-item .navItem.selected,.navItem.selected .hotkey{
+	transition: all 0s;
+	color:#55BDFF;
+}
+
+nav-item .navItem:hover,.navItem:hover .hotkey{
+	padding-left:10px;
+	color:#55BDFF;
+}
+
+nav-item .navComponent{
+	vertical-align: middle;
+}
+
+nav-item .navLabel{
+	font-size: 24px;
+}

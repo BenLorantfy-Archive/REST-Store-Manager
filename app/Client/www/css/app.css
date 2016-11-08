@@ -10,13 +10,29 @@ html,body{
 
 	font-family: Helvetica, sans-serif;
 	overflow:hidden;
+	font-weight: 100;
+}
+
+#header{
+	width:100%;
+	font-size:30px;
+	background-color:#73C2FF;
+	color:white;
 }
 
 #title{
-	width:100%;
 	padding:20px;
-	font-size:30px;
-	background-color:#EEF2EF;
+	padding-bottom: 15px;
+}
+
+#pageStack{
+	width: 100%;
+	padding-top:10px;
+	font-size:14px;
+	background-color:#E7E7EB;
+	padding-left:20px;
+	padding-bottom: 10px;
+	color:#585859;
 }
 
 #debugMenu{
@@ -36,31 +52,19 @@ html,body{
 }
 
 .page{
+	position: absolute;
+	top:110px;
+	left: 0;
 	width: 100%;
 	height: 100%;
 	padding:20px;
+	transition: all 0.3s;
 }
 
-/* Nav */
-.navItem{
-	cursor: pointer;
-	transition: all 0.2s;
-	padding-bottom: 10px;
+.page.moveLeft{
+	left:-100%;
 }
 
-.hotkey{
-	color:grey;
-}
-
-.navItem:hover,.navItem:hover .hotkey{
-	padding-left:10px;
-	color:#55BDFF;
-}
-
-.navComponent{
-	vertical-align: middle;
-}
-
-.navLabel{
-	font-size: 24px;
+.page.moveRight{
+	left:100%;
 }

@@ -2,38 +2,32 @@
 <head>
 	<link rel="stylesheet" type="text/css" href="css/lib/font-awesome/css/font-awesome.css">
 	<link rel="stylesheet" type="text/css" href="css/app.css">
+	<script type="text/javascript" src="js/lib/angular.min.js"></script>
 	<script type="text/javascript" src="js/lib/jquery-3.1.1.js"></script>
 	<script type="text/javascript" src="js/lib/request.js"></script>
 </head>
-<body>
-	<div id="debugMenu">
-		<h2>Debug</h2>
-		<button onclick="location.reload();">Refresh</button>
-	</div>
-	<div id="title">EasyManage 1.0</div>
-	<div class="page">
+<body ng-app="app" ng-controller="MainController">
+	<div id="header"><div id="title">EasyManage 1.0</div><div id="pageStack">/ home /</div></div>
+	<div id="homePage" class="page">
 		<div class="nav">
-			<div class="navItem">
-				<span class="hotkey navComponent">1</span>
-				<span class="navLabel navComponent">Search</span>
-				<span class="arrow navComponent">&gt;&gt;</span>
-			</div>
-			<div class="navItem">
-				<span class="hotkey navComponent">2</span>
-				<span class="navLabel navComponent">Insert</span>
-				<span class="arrow navComponent">&gt;&gt;</span>
-			</div>
-			<div class="navItem">
-				<span class="hotkey navComponent">3</span>
-				<span class="navLabel navComponent">Update</span>
-				<span class="arrow navComponent">&gt;&gt;</span>
-			</div>
-			<div class="navItem">
-				<span class="hotkey navComponent">4</span>
-				<span class="navLabel navComponent">Delete</span>
-				<span class="arrow navComponent">&gt;&gt;</span>
-			</div>
+			<nav-item hotkey="1" label="Search" page="search"></nav-item>
+			<nav-item hotkey="2" label="Insert" page="insert"></nav-item>
+			<nav-item hotkey="3" label="Update" page="update"></nav-item>
+			<nav-item hotkey="4" label="Delete" page="delete"></nav-item>
 		</div>
 	</div>
+	<div id="searchPage" class="moveRight page">
+		<nav-item hotkey="1" label="Customers" page="searchCustomers"></nav-item>
+		<nav-item hotkey="2" label="Products" page="searchProducts"></nav-item>
+		<nav-item hotkey="3" label="Orders" page="searchOrders"></nav-item>
+		<nav-item hotkey="4" label="Cart" page="searchCart"></nav-item>
+		<nav-item hotkey="5" label="Back" page="back"></nav-item>
+	</div>
+
+	<div id="searchCustomersPage" class="moveRight page">
+		<nav-item hotkey="1" label="Back" page="back"></nav-item>
+	</div>
+
+	<script type="text/javascript" src="js/index.js"></script>
 </body>
 </html>

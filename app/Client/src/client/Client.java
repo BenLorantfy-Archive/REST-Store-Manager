@@ -5,6 +5,11 @@
  */
 package client;
 
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+import com.sun.net.httpserver.HttpServer;
+import java.io.OutputStream;
+import java.net.InetSocketAddress;
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
@@ -17,10 +22,60 @@ import javafx.scene.paint.Color;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+
+import java.io.File;
+import java.io.FileInputStream;
+
+import netscape.javascript.JSObject;
  
+    class Handler implements HttpHandler {
+        @Override
+        public void handle(HttpExchange t) {
+           String path = t.getRequestURI().getPath();
+           if(path.equals("/")){
+               path = "/index.html";
+           }
+
+
+            // String path = System.getProperty("user.dir")
+            try{
+                int code = 200;
+                File file = new File(System.getProperty("user.dir") + "/www/" + path);
+                String document = "";
+                
+                if(file.exists() && !file.isDirectory()) { 
+                  FileInputStream fis = new FileInputStream(file);
+                    byte[] data = new byte[(int) file.length()];
+                    fis.read(data);
+                    fis.close();                  
+                    document = new String(data, "UTF-8");
+                }else{
+                    code = 404;
+                    document = "404";
+                }
+
+
+                
+
+                t.sendResponseHeaders(code, 0); // http://stackoverflow.com/a/33857650
+                //t.getResponseHeaders().set("Content-Type", "text/html; charset=UTF-8");
+
+               
+                OutputStream os = t.getResponseBody();
+                os.write(document.getBytes());
+                os.close();                  
+            }catch(Exception e){
+               System.out.println("IO Failed: " + e.getMessage());
+            }       
+
+        }
+        
+    }
  
 public class Client extends Application {
     private Scene scene;
+    private static HttpServer server = null;
+    
     @Override public void start(Stage stage) {
         // create the scene
         stage.setTitle("Client");
@@ -29,24 +84,69 @@ public class Client extends Application {
         scene.getStylesheets().add("webviewsample/BrowserToolbar.css");        
         stage.show();
     }
+    
+    @Override
+    public void stop(){
+        System.out.println("Stage is closing");
+        server.stop(0);
+    }
  
     public static void main(String[] args){
+        // [ Start the Web Server ]
+        // Neccessary to use web server over file:/// to get around same-origin policy restrictions
+        
+        try{
+            System.out.println("Creating Http Server...");
+            server = HttpServer.create(new InetSocketAddress(3784), 0);
+            server.createContext("/", new Handler());
+            server.setExecutor(null); // creates a default executor
+            server.start();
+            System.out.println("Created Http Server on port 3784...");
+        }catch(Exception e){
+            System.out.println("Failed to create HTTP Server: " + e.getMessage());
+        }
+        
+        
         launch(args);
     }
 }
+
 class Browser extends Region {
  
     final WebView browser = new WebView();
     final WebEngine webEngine = browser.getEngine();
+    
+    public void log(){
+        
+    }
+    
+    // http://stackoverflow.com/questions/28687640/javafx-8-webengine-how-to-get-console-log-from-javascript-to-system-out-in-ja
+    public class JavaBridge
+    {
+        public void log(String text)
+        {
+            System.out.println(text);
+        }
+    }
      
     public Browser() {
+        JSObject window = (JSObject) webEngine.executeScript("window");
+        JavaBridge bridge = new JavaBridge();
+        window.setMember("java", bridge); 
+        webEngine.executeScript("console.log = function(message)\n" +
+        "{\n" +
+        "    java.log(message);\n" +
+        "};");
+        
         //apply the styles
         getStyleClass().add("browser");
         // load the web page
-        String path = System.getProperty("user.dir");  
-        path.replace("\\\\", "/");  
-        path +=  "/www/index.html";  
-        webEngine.load("file:///" + path); 
+//        String path = System.getProperty("user.dir");  
+//        path.replace("\\\\", "/");  
+//        path +=  "/www/index.html";  
+        String path = "http://localhost:3784/";
+//       String path = "https://www.google.ca/";
+        webEngine.load(path); 
         //add the web view to the scene
         getChildren().add(browser);
     }
