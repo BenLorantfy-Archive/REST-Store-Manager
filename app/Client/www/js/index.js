@@ -1,6 +1,47 @@
 var app = angular.module('app', []);
 
 app.controller('MainController', function($scope, $compile) {
+	// [ Page Events ]
+	// These functions are invoked whenever the user navigates to the corresponding page
+	var pages = {
+		searchCustomersResults: function(){
+			var customers = [
+				{
+					 "custID":493
+					,"firstName":"Ben"
+					,"lastName":"Lorantfy"
+					,"phoneNumber":"(555) 555 - 5555"
+				},
+				{
+					 "custID":493
+					,"firstName":"Thomas"
+					,"lastName":"Lorantfy"
+					,"phoneNumber":"(555) 555 - 5555"
+				}
+			];
+
+			var list = $("<customer-list></customer-list>");
+
+			$.each(customers,function(i,customer){
+				var el = $("<customer-item></customer-item>");
+				el.attr({
+					 "customer-id": customer.custID
+					,"first-name": customer.firstName
+					,"last-name": customer.lastName
+					,"phone-number": customer.phoneNumber
+				});
+
+				list.append(el);
+			});
+
+			$("#searchCustomersResultsPage").find("customer-list").replaceWith(list);
+			$compile(list)($scope);
+
+
+
+		}
+	};
+
 
 	// [ Navigation ]
 	(function navigation(){
@@ -22,8 +63,24 @@ app.controller('MainController', function($scope, $compile) {
 			navigate(fromPage,toPage,toLabel);
 		});
 
+		// [ Don't Tab to Url Bar ]
+		$('.page input:visible').last().on('keydown', function (e) {
+		    if (e.keyCode == 9 && e.shiftKey == false) {
+		        e.preventDefault();
+		        $(this).blur();
+		       // $('.page input:visible').first().focus();
+		    }
+		});
+
+
 		// [ On Key Press ]
 		$(document).keydown(function(e){
+			// If focused in textbox, don't use nav control hotkeys
+			if($(document.activeElement).prop("tagName").toLowerCase() == "input" 
+			 		|| $(document.activeElement).prop("tagName").toLowerCase() == "textarea"){
+				return;
+			}
+
 			var number = e.keyCode - 48;
 			var pageEl = $("#" + currPage + "Page");
 			navEl = pageEl.find("nav-item").eq(number - 1);
@@ -39,6 +96,12 @@ app.controller('MainController', function($scope, $compile) {
 		})
 
 		$(document).keyup(function(e){
+			// If focused in textbox, don't use nav control hotkeys
+			if($(document.activeElement).prop("tagName").toLowerCase() == "input" 
+			 		|| $(document.activeElement).prop("tagName").toLowerCase() == "textarea"){
+				return;
+			}
+
 			var number = e.keyCode - 48;
 			$("nav-item").not(navEl).find(".navItem").removeClass("selected");
 			if(number == pageKey){
@@ -77,6 +140,11 @@ app.controller('MainController', function($scope, $compile) {
 			})
 
 			$("#pageStack").text(pageStackStr);
+
+			// [ Invoke page logic ]
+			if(typeof pages[toPage] === "function"){
+				pages[toPage]();
+			}
 		}
 
 
@@ -87,7 +155,9 @@ app.controller('MainController', function($scope, $compile) {
 // [ Load all the components ]
 (function(){
 	var comps = [
-		"nav-item"
+		 "nav-item"
+		,"customer-item"
+		,"customer-list"
 	];
 
 	$.each(comps,function(i,name){

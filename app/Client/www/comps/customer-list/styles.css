@@ -1,0 +1,21 @@
+customer-list .table{
+	display: table;
+	margin-bottom: 10px;
+}
+
+customer-list .table-header{
+	display: table-row;
+}
+
+customer-list .table-header .col{
+	font-weight: bold;
+}
+
+customer-list .col{
+	display: table-cell;
+	padding:20px;
+	padding-bottom:10px;
+	padding-top:10px;
+	border:1px solid white;
+	background-color:rgba(0,0,0,0.1);;
+}

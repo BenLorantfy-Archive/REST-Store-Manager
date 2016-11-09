@@ -1,0 +1,8 @@
+/*customer-list{
+	display: table;
+	margin-bottom: 10px;
+}*/
+
+customer-item{
+	display: table-row;
+}

@@ -7,26 +7,45 @@
 	<script type="text/javascript" src="js/lib/request.js"></script>
 </head>
 <body ng-app="app" ng-controller="MainController">
-	<div id="header"><div id="title">EasyManage 1.0</div><div id="pageStack">/ home /</div></div>
-	<div id="homePage" class="page">
-		<div class="nav">
-			<nav-item hotkey="1" label="Search" page="search"></nav-item>
-			<nav-item hotkey="2" label="Insert" page="insert"></nav-item>
-			<nav-item hotkey="3" label="Update" page="update"></nav-item>
-			<nav-item hotkey="4" label="Delete" page="delete"></nav-item>
-		</div>
-	</div>
-	<div id="searchPage" class="moveRight page">
+	<header>
+		<div id="title">EasyManage 1.0</div>
+		<div id="pageStack">/ home /</div>
+	</header>
+
+	<section id="homePage" class="page">
+		<nav-item hotkey="1" label="Search" page="search"></nav-item>
+		<nav-item hotkey="2" label="Insert" page="insert"></nav-item>
+		<nav-item hotkey="3" label="Update" page="update"></nav-item>
+		<nav-item hotkey="4" label="Delete" page="delete"></nav-item>
+	</section>
+
+	<section id="searchPage" class="moveRight page">
 		<nav-item hotkey="1" label="Customers" page="searchCustomers"></nav-item>
 		<nav-item hotkey="2" label="Products" page="searchProducts"></nav-item>
 		<nav-item hotkey="3" label="Orders" page="searchOrders"></nav-item>
 		<nav-item hotkey="4" label="Cart" page="searchCart"></nav-item>
 		<nav-item hotkey="5" label="Back" page="back"></nav-item>
-	</div>
+	</section>
 
-	<div id="searchCustomersPage" class="moveRight page">
+	<section id="searchCustomersPage" class="moveRight page">
+		<input class="textbox" type="text" placeholder="Customer ID">
+		<input class="textbox" type="text" placeholder="First Name">
+		<input class="textbox" type="text" placeholder="Last Name">
+		<input class="textbox" type="text" placeholder="Phone Number">
+		<nav-item hotkey="1" label="Results" page="searchCustomersResults"></nav-item>
+		<nav-item hotkey="2" label="Back" page="back"></nav-item>
+	</section>
+
+	<section id="searchCustomersResultsPage" class="moveRight page">	
+		<customer-list>
+			<customer-item customer-id="1923" first-name="Ben" last-name="Lorantfy" phone-number="123"></customer-item>
+			<customer-item customer-id="23" first-name="Thomas" last-name="Lorantfy" phone-number="123"></customer-item>
+			<customer-item customer-id="24345" first-name="Kaiti" last-name="Jones" phone-number="123"></customer-item>
+			<customer-item customer-id="12" first-name="Jess" last-name="Boops" phone-number="123"></customer-item>
+		</customer-list>
+		
 		<nav-item hotkey="1" label="Back" page="back"></nav-item>
-	</div>
+	</section>
 
 	<script type="text/javascript" src="js/index.js"></script>
 </body>

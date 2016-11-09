@@ -3,8 +3,7 @@ app.directive('navItem', function() {
         restrict: 'E',
         scope: {
             hotkey: '@',
-			label: '@',
-			back:'@'
+			label: '@'
         },
         templateUrl: 'comps/nav-item/markup.html',
     };

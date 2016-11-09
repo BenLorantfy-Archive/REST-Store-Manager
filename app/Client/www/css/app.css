@@ -13,7 +13,7 @@ html,body{
 	font-weight: 100;
 }
 
-#header{
+header{
 	width:100%;
 	font-size:30px;
 	background-color:#73C2FF;
@@ -67,4 +67,14 @@ html,body{
 
 .page.moveRight{
 	left:100%;
+}
+
+.textbox{
+	display: block;
+	margin-bottom: 10px;
+	background-color:rgba(0,0,0,0.1);
+	outline: none;
+	border:none;
+	padding:10px;
+	font-size:18px;
 }
