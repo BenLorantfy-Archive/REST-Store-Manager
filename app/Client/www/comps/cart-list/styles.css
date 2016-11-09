@@ -1,12 +1,12 @@
-customer-list .table{
+cart-list .table{
 	display: table;
 	margin-bottom: 10px;
 }
 
-customer-list .table-header{
+cart-list .table-header{
 	display: table-row;
 }
 
-customer-list .table-header .col{
+cart-list .table-header .col{
 	font-weight: bold;
 }

@@ -43,8 +43,8 @@
 		<input class="textbox" type="text" placeholder="Price">
 		<input class="textbox" type="text" placeholder="Weight">
 		<input class="textbox" type="text" placeholder="In Stock">
-		<!-- <nav-item hotkey="1" label="Results" page="searchProductsResults"></nav-item> -->
-		<nav-item hotkey="1" label="Back" page="back"></nav-item>
+		<nav-item hotkey="1" label="Results" page="searchProductsResults"></nav-item>
+		<nav-item hotkey="2" label="Back" page="back"></nav-item>
 	</section>
 
 	<section id="searchOrdersPage" class="moveRight page">
@@ -52,16 +52,16 @@
 		<input class="textbox" type="text" placeholder="Customer ID">
 		<input class="textbox" type="text" placeholder="P.O. Number">
 		<input class="textbox" type="text" placeholder="Order Date">
-		<!-- <nav-item hotkey="1" label="Results" page="searchProductsResults"></nav-item> -->
-		<nav-item hotkey="1" label="Back" page="back"></nav-item>
+		<nav-item hotkey="1" label="Results" page="searchOrdersResults"></nav-item>
+		<nav-item hotkey="2" label="Back" page="back"></nav-item>
 	</section>
 
 	<section id="searchCartPage" class="moveRight page">
 		<input class="textbox" type="text" placeholder="Order ID">
 		<input class="textbox" type="text" placeholder="Product ID">
 		<input class="textbox" type="text" placeholder="Quanity">
-		<!-- <nav-item hotkey="1" label="Results" page="searchProductsResults"></nav-item> -->
-		<nav-item hotkey="1" label="Back" page="back"></nav-item>
+		<nav-item hotkey="1" label="Results" page="searchCartResults"></nav-item>
+		<nav-item hotkey="2" label="Back" page="back"></nav-item>
 	</section>
 
 	<!-- Search Results Page -->
@@ -72,6 +72,33 @@
 			<customer-item customer-id="24345" first-name="Kaiti" last-name="Jones" phone-number="123"></customer-item>
 			<customer-item customer-id="12" first-name="Jess" last-name="Boops" phone-number="123"></customer-item>
 		</customer-list>
+		
+		<nav-item hotkey="1" label="Back" page="back"></nav-item>
+	</section>
+
+	<section id="searchProductsResultsPage" class="moveRight page">	
+		<product-list>
+			<product-item product-id="1923" name="LightBulb" price="2.00" weight="49" in-stock="YES"></product-item>
+			<product-item product-id="1923" name="LightBulb" price="2.00" weight="49" in-stock="YES"></product-item>
+		</product-list>
+		
+		<nav-item hotkey="1" label="Back" page="back"></nav-item>
+	</section>
+
+	<section id="searchOrdersResultsPage" class="moveRight page">	
+		<order-list>
+			<order-item order-id="1923" customer-id="1923" po-number="43" order-date="Nov 23"></order-item>
+			<order-item order-id="2345" customer-id="6345" po-number="64" order-date="Nov 24"></order-item>
+		</order-list>
+		
+		<nav-item hotkey="1" label="Back" page="back"></nav-item>
+	</section>
+
+	<section id="searchCartResultsPage" class="moveRight page">	
+		<cart-list>
+			<cart-item order-id="1923" product-id="1923" quanity="43"></cart-item>
+			<cart-item order-id="2345" product-id="6345" quanity="64"></cart-item>
+		</cart-list>
 		
 		<nav-item hotkey="1" label="Back" page="back"></nav-item>
 	</section>

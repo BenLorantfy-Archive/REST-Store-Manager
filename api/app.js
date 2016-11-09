@@ -56,6 +56,7 @@ app.use (function(req, res, next) {
 // https://www.html5rocks.com/en/tutorials/cors/
 app.use(cors());
 
+// [ Customer Search ]
 app.get("/customers",function(req,res){
     db.select("custID","firstName","lastName","phoneNumber").from("Customer").then(function(customers){
         res.end(JSON.stringify(customers));

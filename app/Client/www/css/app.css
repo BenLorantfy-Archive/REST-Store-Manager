@@ -78,3 +78,12 @@ header{
 	padding:10px;
 	font-size:18px;
 }
+
+.col{
+	display: table-cell;
+	padding:20px;
+	padding-bottom:10px;
+	padding-top:10px;
+	border:1px solid white;
+	background-color:rgba(0,0,0,0.1);;
+}

@@ -14,7 +14,7 @@ app.controller('MainController', function($scope, $compile) {
 			// [ Make the request for customers ]
 			// The search should use the query string
 			$.request("GET","/customers").done(renderCustomers);
-			
+
 			// [ Render the customers ]
 			function renderCustomers(customers){
 				var list = $("<customer-list></customer-list>");
@@ -34,10 +34,6 @@ app.controller('MainController', function($scope, $compile) {
 				$("#searchCustomersResultsPage").find("customer-list").replaceWith(list);
 				$compile(list)($scope);				
 			}
-
-
-
-
 		}
 	};
 
@@ -151,12 +147,20 @@ app.controller('MainController', function($scope, $compile) {
 
 });
 
-// [ Load all the components ]
+// [ Async load all the components ]
+// - Declutters the head tag in index.html
+// - App loads faster
 (function(){
 	var comps = [
 		 "nav-item"
 		,"customer-item"
 		,"customer-list"
+		,"product-item"
+		,"product-list"
+		,"order-item"
+		,"order-list"
+		,"cart-item"
+		,"cart-list"
 	];
 
 	$.each(comps,function(i,name){
