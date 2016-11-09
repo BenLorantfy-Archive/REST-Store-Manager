@@ -58,7 +58,29 @@ app.use(cors());
 
 // [ Customer Search ]
 app.get("/customers",function(req,res){
-    db.select("custID","firstName","lastName","phoneNumber").from("Customer").then(function(customers){
+    var query = db
+        .select("custID","firstName","lastName","phoneNumber")
+        .from("Customer");
+
+    if(req.query.custID){
+        query.orWhere("custID","like","%" + req.query.custID + "%");
+    }
+
+    if(req.query.firstName){
+        query.orWhere("firstName","like","%" + req.query.firstName + "%");
+    }
+
+    if(req.query.lastName){
+        query.orWhere("lastName","like","%" + req.query.lastName + "%");
+    }
+
+    if(req.query.phoneNumber){
+        query.orWhere("phoneNumber","like","%" + req.query.phoneNumber + "%");
+    }
+
+    // console.log(query);
+
+    query.then(function(customers){
         res.end(JSON.stringify(customers));
     });
 })

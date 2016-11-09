@@ -12,8 +12,23 @@ app.controller('MainController', function($scope, $compile) {
 		searchCustomersResults: function(){
 
 			// [ Make the request for customers ]
-			// The search should use the query string
-			$.request("GET","/customers").done(renderCustomers);
+			// The search should uses the query string, which is the most RESTful way of searching
+			// http://stackoverflow.com/a/1081720
+			var query = "?";
+
+			// [ Get search parameters ]
+			var custID = $("#searchCustomersPage .custID").val();
+			var firstName = $("#searchCustomersPage .firstName").val();
+			var lastName = $("#searchCustomersPage .lastName").val();
+			var phoneNumber = $("#searchCustomersPage .phoneNumber").val();
+
+			if(custID) query += "custID=" + encodeURI(custID) + "&";
+			if(firstName) query += "firstName=" + encodeURI(firstName) + "&";
+			if(lastName) query += "lastName=" + encodeURI(lastName) + "&";
+			if(phoneNumber) query += "phoneNumber=" + encodeURI(phoneNumber) + "&";
+
+			// [ Make the actual REST request ]
+			$.request("GET","/customers" + query).done(renderCustomers);
 
 			// [ Render the customers ]
 			function renderCustomers(customers){
@@ -49,6 +64,8 @@ app.controller('MainController', function($scope, $compile) {
 		var pageKey = 0;
 		var navEl = $("");
 
+		updateTabIndex();
+
 		// [ On Click ]
 		$("body").on("click","nav-item",function(){
 			fromPage = $(this).closest(".page").attr("id").replace("Page","");
@@ -58,14 +75,39 @@ app.controller('MainController', function($scope, $compile) {
 			navigate(fromPage,toPage,toLabel);
 		});
 
+		$(document).keydown(function(e){
+			if(dontJump){
+				dontJump = false;
+				return;
+			}
+
+			var page = $("#" + currPage + "Page");
+
+			if (e.keyCode == 9 && e.shiftKey == false) {
+				if($(document.activeElement).prop("tagName").toLowerCase() != "input"){
+					e.preventDefault();
+					page.find("input").first().focus();
+				}
+			}
+		})
+
+		var dontJump = false;
+
 		// [ Don't Tab to Url Bar ]
-		$('.page input:visible').last().on('keydown', function (e) {
-		    if (e.keyCode == 9 && e.shiftKey == false) {
-		        e.preventDefault();
-		        $(this).blur();
-		       // $('.page input:visible').first().focus();
-		    }
+		$('input:visible').on('keydown', function (e) {
+			var page = $("#" + currPage + "Page");
+
+			if($(this).index() == page.find("input").last().index()){
+			    if (e.keyCode == 9 && e.shiftKey == false) {
+			        e.preventDefault();
+			        $(this).blur();
+			        dontJump = true;
+			       // $('.page input:visible').first().focus();
+			    }				
+			}
 		});
+
+
 
 
 		// [ On Key Press ]
@@ -140,6 +182,15 @@ app.controller('MainController', function($scope, $compile) {
 			if(typeof pages[toPage] === "function"){
 				pages[toPage]();
 			}
+
+			// [ Make sure user can't tab to offscreen elements ]
+			updateTabIndex();
+		}
+
+		function updateTabIndex(){
+			var page = $("#" + currPage + "Page");
+			$("input").attr("tabindex",-1);
+			page.find("input").removeAttr("tabindex");
 		}
 
 
