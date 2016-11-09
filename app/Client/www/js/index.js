@@ -1,41 +1,40 @@
 var app = angular.module('app', []);
 
 app.controller('MainController', function($scope, $compile) {
+
+	// [ Set the REST API root ]
+	$.request.host = "http://localhost/";
+
+
 	// [ Page Events ]
 	// These functions are invoked whenever the user navigates to the corresponding page
 	var pages = {
 		searchCustomersResults: function(){
-			var customers = [
-				{
-					 "custID":493
-					,"firstName":"Ben"
-					,"lastName":"Lorantfy"
-					,"phoneNumber":"(555) 555 - 5555"
-				},
-				{
-					 "custID":493
-					,"firstName":"Thomas"
-					,"lastName":"Lorantfy"
-					,"phoneNumber":"(555) 555 - 5555"
-				}
-			];
 
-			var list = $("<customer-list></customer-list>");
+			// [ Make the request for customers ]
+			// The search should use the query string
+			$.request("GET","/customers").done(renderCustomers);
+			
+			// [ Render the customers ]
+			function renderCustomers(customers){
+				var list = $("<customer-list></customer-list>");
 
-			$.each(customers,function(i,customer){
-				var el = $("<customer-item></customer-item>");
-				el.attr({
-					 "customer-id": customer.custID
-					,"first-name": customer.firstName
-					,"last-name": customer.lastName
-					,"phone-number": customer.phoneNumber
+				$.each(customers,function(i,customer){
+					var el = $("<customer-item></customer-item>");
+					el.attr({
+						 "customer-id": customer.custID
+						,"first-name": customer.firstName
+						,"last-name": customer.lastName
+						,"phone-number": customer.phoneNumber
+					});
+
+					list.append(el);
 				});
 
-				list.append(el);
-			});
+				$("#searchCustomersResultsPage").find("customer-list").replaceWith(list);
+				$compile(list)($scope);				
+			}
 
-			$("#searchCustomersResultsPage").find("customer-list").replaceWith(list);
-			$compile(list)($scope);
 
 
 

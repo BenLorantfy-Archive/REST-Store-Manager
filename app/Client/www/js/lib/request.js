@@ -1,19 +1,22 @@
 (function($,window,document){
 	$.request = function(verb,path,data){
+		var json = JSON.stringify(data);
+
 		// [ Format slashes ]
 		var host = $.request.host;
 		if(host[host.length - 1] == "/"){
 			host = host.substr(0,host.length - 1);
 		}
 
-		if(path[path.length - 1] != "/"){
-			path += "/";
-		}
-
 		// [ Creates CORS object ]
 		var xhr = createCORSRequest(verb, host + path);
 		if (!xhr) {
 		  throw new Error('CORS not supported');
+		}
+
+		// [ Add Token to request if it exists ]
+		if($.request.token){
+			xhr.setRequestHeader("X-Token", $.request.token);
 		}
 
 		var handler = {
@@ -29,15 +32,21 @@
 			}
 		}
 
-		xhr.onload = function(data){
-			handler.doneCallback(data);
+		xhr.onload = function(event){
+			// debugger;
+			try{
+				var json = event.currentTarget.responseText;
+				handler.doneCallback(JSON.parse(json));
+			}catch(ex){
+				handler.failCallback(event);
+			}
 		}
 
-		xhr.onerror = function(data){
-			handler.failCallback(data);
+		xhr.onerror = function(event){
+			handler.failCallback(event);
 		}
 
-		xhr.send();
+		xhr.send(json);
 
 		return handler;
 	}
