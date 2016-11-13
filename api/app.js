@@ -5,35 +5,14 @@ var cors    = require('cors');
 var fs      = require('fs');
 var knex    = require("knex");
 
+// [ Config file with db credentials ]
+var config  = require("./config.json");
+
 // [ Start server ]
 console.log("Starting REST server...");
 
-// [ THe Knex query builder instance ]
-// Can't initilize it until the connect info is read from the config file
-var db = null;
-
-// [ Reads the database credentials/config and connects ]
-fs.readFile("config.json", 'utf8', function(err, json) {
-  if (err) throw err;
-  console.log("Read connection info...");
-  console.log("Connecting to database...");
-
-  var config = null;
-  try{
-    config = JSON.parse(json);
-  }catch(e){
-    console.log("Config file was corrupted!");
-    throw e;
-  }
-
-  try{
-    db = knex(config);
-  }catch(e){
-    console.log("Failed to conncet to database!");
-    throw e;
-  }
-
-});
+// [ The Knex query builder instance ]
+var db = knex(config);
 
 // [ Create the express app ]
 var app = express();
@@ -48,6 +27,11 @@ app.use (function(req, res, next) {
 
     req.on('end', function() {
         req.body = data;
+        try{
+            req.body = JSON.parse(data);
+        }catch(e){
+            // do nothing
+        }
         next();
     });
 });
@@ -85,7 +69,29 @@ app.get("/customers",function(req,res){
     });
 })
 
+// [ Customer Insert ]
+app.post("/customers",function(req,res){
+    var query = db
+        .insert({
+            firstName: req.body.firstName, 
+            lastName: req.body.lastName,
+            phoneNumber:req.body.phoneNumber
+        })
+        .into('Customer');
+
+    query.then(function(){
+        res.end(JSON.stringify({ sucess:true }));
+    });
+})
+
+
 // [ Listen for requests ]
 app.listen(80, function () {
   console.log('Web server listening on port 80...');
 });
+
+//process.on('SIGTERM', function () {
+//  app.close(function () {
+//    process.exit(0);
+//  });
+//});

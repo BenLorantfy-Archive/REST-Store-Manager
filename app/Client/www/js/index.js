@@ -149,6 +149,7 @@ app.controller('MainController', function($scope, $compile) {
 		})
 
 		function navigate(fromPage,toPage){
+            if(toPage=="none") return;
 			if(toPage == "back"){
 				pageStack.pop();
 				pageLabelStack.pop();
@@ -195,6 +196,23 @@ app.controller('MainController', function($scope, $compile) {
 
 
 	})();
+    
+    // [ Inserting ]
+    $("#insertCustomerPage .insert").click(function(){
+        var firstName   = $("#insertCustomerPage .firstName").val();
+        var lastName    = $("#insertCustomerPage .lastName").val();
+        var phoneNumber = $("#insertCustomerPage .phoneNumber").val();
+        
+        var data = {
+             firstName:firstName
+            ,lastName:lastName
+            ,phoneNumber:phoneNumber
+        }
+        
+        $.request("POST","/customers",data,function(){
+            alert("Inserted");
+        })
+    })
 
 });
 
