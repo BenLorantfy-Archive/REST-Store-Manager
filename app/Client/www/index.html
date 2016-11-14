@@ -5,6 +5,7 @@
 	<script type="text/javascript" src="js/lib/angular.min.js"></script>
 	<script type="text/javascript" src="js/lib/jquery-3.1.1.js"></script>
 	<script type="text/javascript" src="js/lib/request.js"></script>
+    <script type="text/javascript" src="js/lib/jspdf.js"></script>
 </head>
 <body ng-app="app" ng-controller="MainController">
 	<header>
@@ -90,6 +91,10 @@
 		<nav-item hotkey="2" label="Back" page="back"></nav-item>
 	</section>
 
+    <section id="purchaseOrderPage" class="moveRight page">
+        <nav-item hotkey="1" label="Print" page="none"></nav-item>
+        <nav-item hotkey="2" label="Back" page="back"></nav-item>
+    </section>
     
     
     <!--

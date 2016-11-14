@@ -144,8 +144,9 @@ class Browser extends Region {
 //        String path = System.getProperty("user.dir");  
 //        path.replace("\\\\", "/");  
 //        path +=  "/www/index.html";  
-        String path = "http://localhost:3784/";
+       // String path = "http://localhost:3784/";
 //       String path = "https://www.google.ca/";
+String path = "https://parall.ax/products/jspdf";
         webEngine.load(path); 
         //add the web view to the scene
         getChildren().add(browser);

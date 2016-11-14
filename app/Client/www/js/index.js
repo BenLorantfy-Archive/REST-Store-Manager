@@ -9,6 +9,29 @@ app.controller('MainController', function($scope, $compile) {
 	// [ Page Events ]
 	// These functions are invoked whenever the user navigates to the corresponding page
 	var pages = {
+        purchaseOrder:function(){
+            var doc = new jsPDF();
+
+            doc.text(20, 20, 'This is the default font.');
+
+            doc.setFont("courier");
+            doc.setFontType("normal");
+            doc.text(20, 30, 'This is courier normal.');
+
+            doc.setFont("times");
+            doc.setFontType("italic");
+            doc.text(20, 40, 'This is times italic.');
+
+            doc.setFont("helvetica");
+            doc.setFontType("bold");
+            doc.text(20, 50, 'This is helvetica bold.');
+
+            doc.setFont("courier");
+            doc.setFontType("bolditalic");
+            doc.text(20, 60, 'This is courier bolditalic.'); 
+            
+            doc.output('dataurlnewwindow');
+        },
 		searchCustomersResults: function(){
 
 			// [ Make the request for customers ]
@@ -107,9 +130,6 @@ app.controller('MainController', function($scope, $compile) {
 			}
 		});
 
-
-
-
 		// [ On Key Press ]
 		$(document).keydown(function(e){
 			// If focused in textbox, don't use nav control hotkeys
@@ -194,7 +214,9 @@ app.controller('MainController', function($scope, $compile) {
 			page.find("input").removeAttr("tabindex");
 		}
 
-
+        $("body").on("click", ".createPO", function(){
+            navigate(currPage,"purchaseOrder");
+        });
 	})();
     
     // [ Inserting ]
