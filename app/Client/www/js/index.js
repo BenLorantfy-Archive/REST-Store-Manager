@@ -73,7 +73,13 @@ app.controller('MainController', function($scope, $compile) {
 			toPage = $(this).attr("page");
 			toLabel = $(this).attr("label");
 			$(".navItem").removeClass("selected");
-			navigate(fromPage,toPage,toLabel);
+			navigate(fromPage,toPage,false);
+		});
+
+		$("body").on("click","stack-item",function(){
+		    fromPage = $(".page").attr("id").replace("Page","");
+		    toPage = $(this).attr("page");
+		    navigate(currPage, toPage, true);
 		});
 
 		$(document).keydown(function(e){
@@ -144,14 +150,40 @@ app.controller('MainController', function($scope, $compile) {
 			$("nav-item").not(navEl).find(".navItem").removeClass("selected");
 			if(number == pageKey){
 				if(toPage){
-					navigate(fromPage,toPage,toLabel);
+					navigate(fromPage,toPage,false);
 				}
 			}	
 		})
 
-		function navigate(fromPage,toPage){
-            if(toPage=="none") return;
-			if(toPage == "back"){
+		function navigate(fromPage,toPage,back){
+            if(toPage == "none"
+               || toPage === fromPage){
+               return;
+            }
+			if(back){
+			    var fromIndex = 0;
+			    var toIndex = 0;
+			    $.each(pageLabelStack, function(i,page){
+			        var pageStr = page.toLowerCase().split("-")[0];
+			        if (pageStr === fromPage){
+			            fromIndex = i;
+			        }else if (pageStr === toPage){
+			            toIndex = i;
+			        }
+			    });
+
+			    for (var i = 0; i < toIndex - fromIndex; ++i){
+                    pageStack.pop();
+                    pageLabelStack.pop();
+                }
+
+                toPage = pageStack[pageStack.length - 1];
+
+                $("#" + fromPage + "Page").addClass("moveRight");
+                $("#" + toPage + "Page").removeClass("moveLeft").removeClass("moveRight");
+
+                currPage = toPage;
+			}else if(toPage == "back"){
 				pageStack.pop();
 				pageLabelStack.pop();
 
@@ -175,13 +207,14 @@ app.controller('MainController', function($scope, $compile) {
 			// [ Update page stack ]
 			var pageStackStr = "";
 			$.each(pageLabelStack, function(i,page){
-			    pageStackStr += "<stack-item page=" + page.toLowerCase().split("-")[0] + "></stack-item>"
+			    var pageStr = page.toLowerCase().split("-")[0];
+			    pageStackStr += "<stack-item page=" + pageStr + "><div class=\"pageStackItem\">/ " + pageStr + "&nbsp;</div></stack-item>"
 				//pageStackStr += page.toLowerCase().split("-")[0] + " / ";
 			})
 
             var stack = $(pageStackStr);
             $("#pageStack").html(pageStackStr);
-            $compile(pageStackStr)($scope);
+            //$compile(pageStackStr)($scope);
 			//$("#pageStack").text(pageStackStr);
 
 			// [ Invoke page logic ]
