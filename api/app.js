@@ -40,6 +40,7 @@ app.use (function(req, res, next) {
 // https://www.html5rocks.com/en/tutorials/cors/
 app.use(cors());
 
+// [ Customer CRUD functions ****************************************************** ]
 // [ Customer Search ]
 app.get("/customers",function(req,res){
     var query = db
@@ -62,18 +63,19 @@ app.get("/customers",function(req,res){
 
         if (req.query.phoneNumber) {
             query.andWhere("phoneNumber", req.query.phoneNumber);
-
         }
     }
 
     // console.log(query);
-    try {
-        query.then(function (customers) {
+    query.then(function (customers) {
             res.end(JSON.stringify(customers));
+        })
+        .catch(function(err) {
+            res.end(JSON.stringify({
+                success: false,
+                error: err.errno
+            }));
         });
-    } catch(ex){
-        res.end(JSON.stringify(ex));
-    }
 })
 
 // [ Customer Insert ]
@@ -87,8 +89,14 @@ app.post("/customers",function(req,res){
         .into('Customer');
 
     query.then(function(){
-        res.end(JSON.stringify({ sucess:true }));
-    });
+        res.end(JSON.stringify({ success:true }));
+    })
+        .catch(function(err) {
+            res.end(JSON.stringify({
+                success: false,
+                error: err.errno
+            }));
+        });
 })
 
 // [ Customer Update ]
@@ -103,8 +111,14 @@ app.put("/customers/:custID", function(req,res) {
         ('Customer');
 
     query.then(function () {
-        res.end(JSON.stringify({sucess: true}));
+        res.end(JSON.stringify({success: true}));
     })
+        .catch(function(err) {
+            res.end(JSON.stringify({
+                success: false,
+                error: err.errno
+            }));
+        });
 
 })
 
@@ -115,11 +129,18 @@ app.delete("/customers/:custID", function(req,res) {
         .del();
 
     query.then(function () {
-        res.end(JSON.stringify({sucess: true}));
+        res.end(JSON.stringify({success: true}));
     })
+        .catch(function(err) {
+            res.end(JSON.stringify({
+                success: false,
+                error: err.errno
+            }));
+        });
 
 })
 
+// [ Product CRUD Functions****************************************************** ]
 // [ Product Search ]
 app.get("/products", function (req, res) {
     var query = db
@@ -153,7 +174,13 @@ app.get("/products", function (req, res) {
 
     query.then(function (products) {
         res.end(JSON.stringify(products));
-    });
+    })
+        .catch(function(err) {
+            res.end(JSON.stringify({
+                success: false,
+                error: err.errno
+            }));
+        });
 })
 
 // [ Product Insert ]
@@ -168,8 +195,14 @@ app.post("/products", function (req, res) {
         .into('Product');
 
     query.then(function () {
-        res.end(JSON.stringify({sucess: true}));
-    });
+        res.end(JSON.stringify({success: true}));
+    })
+        .catch(function(err) {
+            res.end(JSON.stringify({
+                success: false,
+                error: err.errno
+            }));
+        });
 })
 
 // [ Product Update ]
@@ -185,8 +218,14 @@ app.put("/products/:prodID", function(req,res) {
         .into('Product');
 
     query.then(function () {
-        res.end(JSON.stringify({sucess: true}));
+        res.end(JSON.stringify({success: true}));
     })
+        .catch(function(err) {
+            res.end(JSON.stringify({
+                success: false,
+                error: err.errno
+            }));
+        });
 
 })
 
@@ -197,11 +236,18 @@ app.delete("/products/:prodID", function(req,res) {
         .del();
 
     query.then(function () {
-        res.end(JSON.stringify({sucess: true}));
+        res.end(JSON.stringify({success: true}));
     })
+        .catch(function(err) {
+            res.end(JSON.stringify({
+                success: false,
+                error: err.errno
+            }));
+        });
 
 })
 
+// [ Order CRUD Functions*************************************************************** ]
 // [ Order Search ]
 app.get("/orders", function (req, res) {
     var query = db
@@ -291,7 +337,13 @@ app.get("/orders", function (req, res) {
 
     query.then(function (orders) {
         res.end(JSON.stringify(orders));
-    });
+    })
+        .catch(function(err) {
+            res.end(JSON.stringify({
+                success: false,
+                error: err.errno
+            }));
+        });
 })
 
 // [ Order Insert ]
@@ -305,8 +357,14 @@ app.post("/orders", function (req, res) {
         .into('Order1');
 
     query.then(function () {
-        res.end(JSON.stringify({sucess: true}));
-    });
+        res.end(JSON.stringify({success: true}));
+    })
+        .catch(function(err) {
+            res.end(JSON.stringify({
+                success: false,
+                error: err.errno
+            }));
+        });
 })
 
 // [ Order Update ]
@@ -321,8 +379,14 @@ app.put("/orders/:orderID", function(req,res) {
         .into('Order1');
 
     query.then(function () {
-        res.end(JSON.stringify({sucess: true}));
+        res.end(JSON.stringify({success: true}));
     })
+        .catch(function(err) {
+            res.end(JSON.stringify({
+                success: false,
+                error: err.errno
+            }));
+        });
 
 })
 
@@ -333,11 +397,18 @@ app.delete("/orders/:orderID", function(req,res) {
         .del();
 
     query.then(function () {
-        res.end(JSON.stringify({sucess: true}));
+        res.end(JSON.stringify({success: true}));
     })
+        .catch(function(err) {
+            res.end(JSON.stringify({
+                success: false,
+                error: err.errno
+            }));
+        });
 
 })
 
+// [ Cart CRUD Functions*************************************************************** ]
 // [ Cart Search ]
 app.get("/carts", function (req, res) {
     var query = db
@@ -362,7 +433,13 @@ app.get("/carts", function (req, res) {
 
     query.then(function (carts) {
         res.end(JSON.stringify(carts));
-    });
+    })
+        .catch(function(err) {
+            res.end(JSON.stringify({
+                success: false,
+                error: err.errno
+            }));
+        });
 })
 
 // [ Cart Insert ]
@@ -375,9 +452,16 @@ app.post("/carts", function (req, res) {
         })
         .into('Cart');
 
-    query.then(function () {
-        res.end(JSON.stringify({sucess: true}));
-    });
+        query.then(function () {
+            res.end(JSON.stringify({success: true}));
+        })
+        .catch(function(err) {
+            res.end(JSON.stringify({
+                success: false,
+                error: err.errno
+            }));
+        });
+
 })
 
 // [ Cart Update ]
@@ -393,8 +477,14 @@ app.put("/carts/:cartID", function(req,res) {
         .into('Cart');
 
     query.then(function () {
-        res.end(JSON.stringify({sucess: true}));
+        res.end(JSON.stringify({success: true}));
     })
+        .catch(function(err) {
+            res.end(JSON.stringify({
+                success: false,
+                error: err.errno
+            }));
+        });
 
 })
 
@@ -408,8 +498,14 @@ app.delete("/carts/:cartID", function(req,res) {
         .del();
 
     query.then(function () {
-        res.end(JSON.stringify({sucess: true}));
+        res.end(JSON.stringify({success: true}));
     })
+        .catch(function(err) {
+            res.end(JSON.stringify({
+                success: false,
+                error: err.errno
+            }));
+        });
 
 })
 
