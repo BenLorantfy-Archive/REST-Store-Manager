@@ -47,26 +47,33 @@ app.get("/customers",function(req,res){
         .from("Customer");
 
     if(req.query.custID){
-        query.orWhere("custID","like","%" + req.query.custID + "%");
+        query.where("custID", req.query.custID);
     }
 
-    if(req.query.firstName){
-        query.orWhere("firstName","like","%" + req.query.firstName + "%");
-    }
+    //if custID is present, than these
+    if(!req.query.custID) {
+        if (req.query.firstName) {
+            query.andWhere("firstName", "like", "%" + req.query.firstName + "%");
+        }
 
-    if(req.query.lastName){
-        query.orWhere("lastName","like","%" + req.query.lastName + "%");
-    }
+        if (req.query.lastName) {
+            query.andWhere("lastName", "like", "%" + req.query.lastName + "%");
+        }
 
-    if(req.query.phoneNumber){
-        query.orWhere("phoneNumber","like","%" + req.query.phoneNumber + "%");
+        if (req.query.phoneNumber) {
+            query.andWhere("phoneNumber", req.query.phoneNumber);
+
+        }
     }
 
     // console.log(query);
-
-    query.then(function(customers){
-        res.end(JSON.stringify(customers));
-    });
+    try {
+        query.then(function (customers) {
+            res.end(JSON.stringify(customers));
+        });
+    } catch(ex){
+        res.end(JSON.stringify(ex));
+    }
 })
 
 // [ Customer Insert ]
@@ -92,7 +99,7 @@ app.put("/customers/:custID", function(req,res) {
             lastName: req.body.lastName,
             phoneNumber:req.body.phoneNumber
         })
-        .where("custID","like","%" + req.params.custID + "%")
+        .where("custID", req.params.custID )
         ('Customer');
 
     query.then(function () {
@@ -104,7 +111,7 @@ app.put("/customers/:custID", function(req,res) {
 // [ Customer Delete ]
 app.delete("/customers/:custID", function(req,res) {
     var query = db('Customer')
-        .where("custID","like","%" + req.params.custID + "%")
+        .where("custID", req.params.custID)
         .del();
 
     query.then(function () {
@@ -120,23 +127,26 @@ app.get("/products", function (req, res) {
         .from("Product");
 
     if (req.query.prodID) {
-        query.orWhere("prodID", "like", "%" + req.query.prodID + "%");
+        query.where("prodID", req.query.prodID);
     }
 
-    if (req.query.prodName) {
-        query.orWhere("prodName", "like", "%" + req.query.prodName + "%");
-    }
+    if (!req.query.prodID) {
 
-    if (req.query.price) {
-        query.orWhere("price", "like", "%" + req.query.price + "%");
-    }
+        if (req.query.prodName) {
+            query.andWhere("prodName", "like", "%" + req.query.prodName + "%");
+        }
 
-    if (req.query.prodWeight) {
-        query.orWhere("prodWeight", "like", "%" + req.query.prodWeight + "%");
-    }
+        if (req.query.price) {
+            query.andWhere("price", req.query.price);
+        }
 
-    if (req.query.inStock) {
-        query.orWhere("inStock", "like", "%" + req.query.inStock + "%");
+        if (req.query.prodWeight) {
+            query.andWhere("prodWeight", req.query.prodWeight);
+        }
+
+        if (req.query.inStock) {
+            query.andWhere("inStock", req.query.inStock);
+        }
     }
 
     // console.log(query);
@@ -171,7 +181,7 @@ app.put("/products/:prodID", function(req,res) {
             prodWeight:req.body.prodWeight,
             inStock:req.body.inStock
         })
-        .where("prodID","like","%" + req.params.prodID + "%")
+        .where("prodID",req.params.prodID)
         .into('Product');
 
     query.then(function () {
@@ -183,7 +193,7 @@ app.put("/products/:prodID", function(req,res) {
 // [ Product Delete ]
 app.delete("/products/:prodID", function(req,res) {
     var query = db('Product')
-        .where("prodID","like","%" + req.params.prodID+ "%")
+        .where("prodID", req.params.prodID)
         .del();
 
     query.then(function () {
@@ -195,24 +205,87 @@ app.delete("/products/:prodID", function(req,res) {
 // [ Order Search ]
 app.get("/orders", function (req, res) {
     var query = db
-        .select("orderID", "custID", "poNumber", "orderDate")
-        .from("Order");
+        //.select('orderID", "custID", "poNumber", "orderDate")
+        .select('*')
+        .from("Order1");
 
     if (req.query.orderID) {
-        query.orWhere("orderID", "like", "%" + req.query.orderID + "%");
+        query.where("orderID", req.query.orderID);
+    }
+
+    //if the user specified an orderID, none of these field would matter
+    if(!req.query.orderID) {
+
+        if (req.query.poNumber) {
+            query.andWhere("poNumber", req.query.poNumber);
+        }
+
+        if (req.query.orderDate) {
+            query.andWhere("orderDate", req.query.orderDate);
+        }
+    }
+
+    if(req.query.prodID){
+        query.innerJoin('Cart', 'Order1.orderID', 'Cart.orderID')
+            .innerJoin('Product', 'Cart.prodID', 'Product.prodID')
+        query.andWhere("Cart.prodID",req.query.prodID)
+    }
+
+    if(!req.query.prodID) {
+
+        if (req.query.quantity) {
+            query.innerJoin('Cart', 'Order1.orderID', 'Cart.orderID')
+                .innerJoin('Product', 'Cart.prodID', 'Product.prodID')
+            query.andWhere("Cart.quantity", req.query.quantity)
+        }
+
+        if (req.query.prodName) {
+            query.innerJoin('Cart', 'Order1.orderID', 'Cart.orderID')
+                .innerJoin('Product', 'Cart.prodID', 'Product.prodID')
+            query.andWhere("Product.prodName", req.query.prodName)
+        }
+
+        if (req.query.price) {
+            query.innerJoin('Cart', 'Order1.orderID', 'Cart.orderID')
+                .innerJoin('Product', 'Cart.prodID', 'Product.prodID')
+            query.andWhere("Product.price", req.query.price)
+        }
+
+        if (req.query.prodWeight) {
+            query.innerJoin('Cart', 'Order1.orderID', 'Cart.orderID')
+                .innerJoin('Product', 'Cart.prodID', 'Product.prodID')
+            query.andWhere("Product.prodWeight", req.query.prodWeight)
+        }
+
+        if (req.query.inStock) {
+            query.innerJoin('Cart', 'Order1.orderID', 'Cart.orderID')
+                .innerJoin('Product', 'Cart.prodID', 'Product.prodID')
+            query.andWhere("Product.inStock", req.query.inStock)
+        }
     }
 
     if (req.query.custID) {
-        query.orWhere("custID", "like", "%" + req.query.custID + "%");
+        query.innerJoin('Customer', 'Order1.custID', 'Customer.custID')
+        query.andWhere("Order1.custID", req.query.custID);
     }
 
-    if (req.query.poNumber) {
-        query.orWhere("poNumber", "like", "%" + req.query.poNumber + "%");
+    if(!req.query.custID) {
+        if (req.query.firstName) {
+            query.innerJoin('Customer', 'Order1.custID', 'Customer.custID')
+            query.andWhere("Customer.firstName", req.query.firstName);
+        }
+
+        if (req.query.lastName) {
+            query.innerJoin('Customer', 'Order1.custID', 'Customer.custID')
+            query.andWhere("Customer.lastName", req.query.lastName);
+        }
+
+        if (req.query.phoneNumber) {
+            query.innerJoin('Customer', 'Order1.custID', 'Customer.custID')
+            query.andWhere("Customer.phoneNumber", req.query.phoneNumer);
+        }
     }
 
-    if (req.query.orderDate) {
-        query.orWhere("orderDate", "like", "%" + req.query.orderDate + "%");
-    }
 
     // console.log(query);
 
@@ -229,7 +302,7 @@ app.post("/orders", function (req, res) {
             poNumber: req.body.poNumber,
             orderDate: req.body.orderDate
         })
-        .into('Order');
+        .into('Order1');
 
     query.then(function () {
         res.end(JSON.stringify({sucess: true}));
@@ -244,8 +317,8 @@ app.put("/orders/:orderID", function(req,res) {
             poNumber: req.body.poNumber,
             orderDate:req.body.orderDate
         })
-        .where("orderID","like","%" + req.params.orderID + "%")
-        .into('Order');
+        .where("orderID",req.params.orderID)
+        .into('Order1');
 
     query.then(function () {
         res.end(JSON.stringify({sucess: true}));
@@ -255,8 +328,8 @@ app.put("/orders/:orderID", function(req,res) {
 
 // [ Order Delete ]
 app.delete("/orders/:orderID", function(req,res) {
-    var query = db('Order')
-        .where("orderID","like","%" + req.params.orderID + "%")
+    var query = db('Order1')
+        .where("orderID",req.params.orderID)
         .del();
 
     query.then(function () {
@@ -269,18 +342,20 @@ app.delete("/orders/:orderID", function(req,res) {
 app.get("/carts", function (req, res) {
     var query = db
         .select("orderID", "prodID", "quantity")
-        .from("Order");
+        .from("Order1");
 
     if (req.query.orderID) {
-        query.orWhere("orderID", "like", "%" + req.query.orderID + "%");
+        query.andWhere("orderID",req.query.orderID);
     }
 
     if (req.query.prodID) {
-        query.orWhere("prodID", "like", "%" + req.query.prodID + "%");
+        query.andWhere("prodID",req.query.prodID);
     }
 
-    if (req.query.quantity) {
-        query.orWhere("quantity", "like", "%" + req.query.quantity + "%");
+    if(!req.query.prodID && !req.query.orderID) {
+        if (req.query.quantity) {
+            query.andWhere("quantity", req.query.quantity);
+        }
     }
 
     // console.log(query);
@@ -311,7 +386,10 @@ app.put("/carts/:cartID", function(req,res) {
         .update({
             quantity:req.body.quantity
         })
-        .where("cartID","like","%" + req.params.cartID + "%")
+        .where({
+            "orderID": req.params.cartID.split('-')[0],
+            "prodID": req.params.cartID.split('-')[1]
+        })
         .into('Cart');
 
     query.then(function () {
@@ -323,7 +401,10 @@ app.put("/carts/:cartID", function(req,res) {
 // [ Cart Delete ]
 app.delete("/carts/:cartID", function(req,res) {
     var query = db('Cart')
-        .where("cartID","like","%" + req.params.cartID + "%")
+        .where({
+            "orderID": req.params.cartID.split('-')[0],
+            "prodID": req.params.cartID.split('-')[1]
+        })
         .del();
 
     query.then(function () {
