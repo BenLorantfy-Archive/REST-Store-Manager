@@ -1,0 +1,11 @@
+stack-item {
+    position: relative;
+    float: left;
+    transition: all 0.2s;
+}
+
+stack-item:hover {
+    margin-top:-5px;
+    margin-bottom: 5px;
+    color:#55BDFF;
+}

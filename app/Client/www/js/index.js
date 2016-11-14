@@ -4,6 +4,7 @@ app.controller('MainController', function($scope, $compile) {
 
 	// [ Set the REST API root ]
 	$.request.host = "http://localhost/";
+	$.request.port = 1337;
 
 
 	// [ Page Events ]
@@ -172,12 +173,16 @@ app.controller('MainController', function($scope, $compile) {
 			}			
 
 			// [ Update page stack ]
-			var pageStackStr = "/ ";
+			var pageStackStr = "";
 			$.each(pageLabelStack, function(i,page){
-				pageStackStr += page.toLowerCase().split("-")[0] + " / ";
+			    pageStackStr += "<stack-item page=" + page.toLowerCase().split("-")[0] + "></stack-item>"
+				//pageStackStr += page.toLowerCase().split("-")[0] + " / ";
 			})
 
-			$("#pageStack").text(pageStackStr);
+            var stack = $(pageStackStr);
+            $("#pageStack").html(pageStackStr);
+            $compile(pageStackStr)($scope);
+			//$("#pageStack").text(pageStackStr);
 
 			// [ Invoke page logic ]
 			if(typeof pages[toPage] === "function"){
@@ -230,6 +235,7 @@ app.controller('MainController', function($scope, $compile) {
 		,"order-list"
 		,"cart-item"
 		,"cart-list"
+		,"stack-item"
 	];
 
 	$.each(comps,function(i,name){
