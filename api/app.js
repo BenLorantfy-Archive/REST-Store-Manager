@@ -40,8 +40,12 @@ app.use (function(req, res, next) {
 // https://www.html5rocks.com/en/tutorials/cors/
 app.use(cors());
 
+// [ Customer CRUD functions ****************************************************** ]
 // [ Customer Search ]
 app.get("/customers",function(req,res){
+	console.log('customers search: ');
+	console.log(req.body);
+	
     var query = db
         .select("custID","firstName","lastName","phoneNumber")
         .from("Customer");
@@ -62,22 +66,26 @@ app.get("/customers",function(req,res){
 
         if (req.query.phoneNumber) {
             query.andWhere("phoneNumber", req.query.phoneNumber);
-
         }
     }
 
     // console.log(query);
-    try {
-        query.then(function (customers) {
+    query.then(function (customers) {
             res.end(JSON.stringify(customers));
+        })
+        .catch(function(err) {
+            res.end(JSON.stringify({
+                success: false,
+                error: err.errno
+            }));
         });
-    } catch(ex){
-        res.end(JSON.stringify(ex));
-    }
 })
 
 // [ Customer Insert ]
 app.post("/customers",function(req,res){
+	console.log('customers insert: ');
+	console.log(req.body);
+	
     var query = db
         .insert({
             firstName: req.body.firstName,
@@ -87,12 +95,21 @@ app.post("/customers",function(req,res){
         .into('Customer');
 
     query.then(function(){
-        res.end(JSON.stringify({ sucess:true }));
-    });
+        res.end(JSON.stringify({ success:true }));
+    })
+        .catch(function(err) {
+            res.end(JSON.stringify({
+                success: false,
+                error: err.errno
+            }));
+        });
 })
 
 // [ Customer Update ]
 app.put("/customers/:custID", function(req,res) {
+	console.log('customers update: ');
+	console.log(req.body);
+	
     var query = db
         .update({
             firstName: req.body.firstName,
@@ -103,25 +120,44 @@ app.put("/customers/:custID", function(req,res) {
         ('Customer');
 
     query.then(function () {
-        res.end(JSON.stringify({sucess: true}));
+        res.end(JSON.stringify({success: true}));
     })
+        .catch(function(err) {
+            res.end(JSON.stringify({
+                success: false,
+                error: err.errno
+            }));
+        });
 
 })
 
 // [ Customer Delete ]
 app.delete("/customers/:custID", function(req,res) {
+	console.log('customers delete: ');
+	console.log(req.body);
+	
     var query = db('Customer')
         .where("custID", req.params.custID)
         .del();
 
     query.then(function () {
-        res.end(JSON.stringify({sucess: true}));
+        res.end(JSON.stringify({success: true}));
     })
+        .catch(function(err) {
+            res.end(JSON.stringify({
+                success: false,
+                error: err.errno
+            }));
+        });
 
 })
 
+// [ Product CRUD Functions****************************************************** ]
 // [ Product Search ]
 app.get("/products", function (req, res) {
+	console.log('products search: ');
+	console.log(req.body);
+	
     var query = db
         .select("prodID", "prodName", "price", "prodWeight", "inStock")
         .from("Product");
@@ -153,11 +189,20 @@ app.get("/products", function (req, res) {
 
     query.then(function (products) {
         res.end(JSON.stringify(products));
-    });
+    })
+        .catch(function(err) {
+            res.end(JSON.stringify({
+                success: false,
+                error: err.errno
+            }));
+        });
 })
 
 // [ Product Insert ]
 app.post("/products", function (req, res) {
+	console.log('products insert: ');
+	console.log(req.body);
+	
     var query = db
         .insert({
             prodName: req.body.prodName,
@@ -168,12 +213,21 @@ app.post("/products", function (req, res) {
         .into('Product');
 
     query.then(function () {
-        res.end(JSON.stringify({sucess: true}));
-    });
+        res.end(JSON.stringify({success: true}));
+    })
+        .catch(function(err) {
+            res.end(JSON.stringify({
+                success: false,
+                error: err.errno
+            }));
+        });
 })
 
 // [ Product Update ]
 app.put("/products/:prodID", function(req,res) {
+	console.log('products update: ');
+	console.log(req.body);
+	
     var query = db
         .update({
             prodName: req.body.prodName,
@@ -185,25 +239,44 @@ app.put("/products/:prodID", function(req,res) {
         .into('Product');
 
     query.then(function () {
-        res.end(JSON.stringify({sucess: true}));
+        res.end(JSON.stringify({success: true}));
     })
+        .catch(function(err) {
+            res.end(JSON.stringify({
+                success: false,
+                error: err.errno
+            }));
+        });
 
 })
 
 // [ Product Delete ]
 app.delete("/products/:prodID", function(req,res) {
+	console.log('products delete: ');
+	console.log(req.body);
+	
     var query = db('Product')
         .where("prodID", req.params.prodID)
         .del();
 
     query.then(function () {
-        res.end(JSON.stringify({sucess: true}));
+        res.end(JSON.stringify({success: true}));
     })
+        .catch(function(err) {
+            res.end(JSON.stringify({
+                success: false,
+                error: err.errno
+            }));
+        });
 
 })
 
+// [ Order CRUD Functions*************************************************************** ]
 // [ Order Search ]
 app.get("/orders", function (req, res) {
+	console.log('orders search: ');
+	console.log(req.body);
+	
     var query = db
         //.select('orderID", "custID", "poNumber", "orderDate")
         .select('*')
@@ -291,11 +364,20 @@ app.get("/orders", function (req, res) {
 
     query.then(function (orders) {
         res.end(JSON.stringify(orders));
-    });
+    })
+        .catch(function(err) {
+            res.end(JSON.stringify({
+                success: false,
+                error: err.errno
+            }));
+        });
 })
 
 // [ Order Insert ]
 app.post("/orders", function (req, res) {
+	console.log('orders insert: ');
+	console.log(req.body);
+	
     var query = db
         .insert({
             custID: req.body.custID,
@@ -305,12 +387,21 @@ app.post("/orders", function (req, res) {
         .into('Order1');
 
     query.then(function () {
-        res.end(JSON.stringify({sucess: true}));
-    });
+        res.end(JSON.stringify({success: true}));
+    })
+        .catch(function(err) {
+            res.end(JSON.stringify({
+                success: false,
+                error: err.errno
+            }));
+        });
 })
 
 // [ Order Update ]
 app.put("/orders/:orderID", function(req,res) {
+	console.log('orders update: ');
+	console.log(req.body);
+	
     var query = db
         .update({
             custID: req.body.custID,
@@ -321,25 +412,44 @@ app.put("/orders/:orderID", function(req,res) {
         .into('Order1');
 
     query.then(function () {
-        res.end(JSON.stringify({sucess: true}));
+        res.end(JSON.stringify({success: true}));
     })
+        .catch(function(err) {
+            res.end(JSON.stringify({
+                success: false,
+                error: err.errno
+            }));
+        });
 
 })
 
 // [ Order Delete ]
 app.delete("/orders/:orderID", function(req,res) {
-    var query = db('Order1')
-        .where("orderID",req.params.orderID)
-        .del();
+	console.log('orders delete: ');
+	console.log(req.body);
+
+	var query = db('Order1')
+	.where("orderID",req.params.orderID)
+	.del();
 
     query.then(function () {
-        res.end(JSON.stringify({sucess: true}));
+        res.end(JSON.stringify({success: true}));
     })
+        .catch(function(err) {
+            res.end(JSON.stringify({
+                success: false,
+                error: err.errno
+            }));
+        });
 
 })
 
+// [ Cart CRUD Functions*************************************************************** ]
 // [ Cart Search ]
 app.get("/carts", function (req, res) {
+	console.log('carts search: ');
+	console.log(req.body);
+	
     var query = db
         .select("orderID", "prodID", "quantity")
         .from("Order1");
@@ -362,11 +472,20 @@ app.get("/carts", function (req, res) {
 
     query.then(function (carts) {
         res.end(JSON.stringify(carts));
-    });
+    })
+        .catch(function(err) {
+            res.end(JSON.stringify({
+                success: false,
+                error: err.errno
+            }));
+        });
 })
 
 // [ Cart Insert ]
 app.post("/carts", function (req, res) {
+	console.log('carts insert: ');
+	console.log(req.body);
+	
     var query = db
         .insert({
             orderID: req.body.orderID,
@@ -375,14 +494,24 @@ app.post("/carts", function (req, res) {
         })
         .into('Cart');
 
-    query.then(function () {
-        res.end(JSON.stringify({sucess: true}));
-    });
+        query.then(function () {
+            res.end(JSON.stringify({success: true}));
+        })
+        .catch(function(err) {
+            res.end(JSON.stringify({
+                success: false,
+                error: err.errno
+            }));
+        });
+
 })
 
 // [ Cart Update ]
 app.put("/carts/:cartID", function(req,res) {
-    var query = db
+    console.log('carts update: ');
+	console.log(req.body);
+	
+	var query = db
         .update({
             quantity:req.body.quantity
         })
@@ -393,14 +522,23 @@ app.put("/carts/:cartID", function(req,res) {
         .into('Cart');
 
     query.then(function () {
-        res.end(JSON.stringify({sucess: true}));
+        res.end(JSON.stringify({success: true}));
     })
+        .catch(function(err) {
+            res.end(JSON.stringify({
+                success: false,
+                error: err.errno
+            }));
+        });
 
 })
 
 // [ Cart Delete ]
 app.delete("/carts/:cartID", function(req,res) {
-    var query = db('Cart')
+    console.log('carts delete: ');
+	console.log(req.body);
+	
+	var query = db('Cart')
         .where({
             "orderID": req.params.cartID.split('-')[0],
             "prodID": req.params.cartID.split('-')[1]
@@ -408,15 +546,21 @@ app.delete("/carts/:cartID", function(req,res) {
         .del();
 
     query.then(function () {
-        res.end(JSON.stringify({sucess: true}));
+        res.end(JSON.stringify({success: true}));
     })
+        .catch(function(err) {
+            res.end(JSON.stringify({
+                success: false,
+                error: err.errno
+            }));
+        });
 
 })
 
 
 // [ Listen for requests ]
-app.listen(80, function () {
-    console.log('Web server listening on port 80...');
+app.listen(1337, function () {
+    console.log('Web server listening on port 1337...');
 });
 
 //process.on('SIGTERM', function () {

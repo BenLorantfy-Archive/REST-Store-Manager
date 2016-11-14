@@ -3,8 +3,8 @@ var app = angular.module('app', []);
 app.controller('MainController', function($scope, $compile) {
 
 	// [ Set the REST API root ]
-	$.request.host = "http://localhost/";
-
+	$.request.host = "http://localhost:1337/";
+    $.restService.host = "http://localhost:1337";
 
 	// [ Page Events ]
 	// These functions are invoked whenever the user navigates to the corresponding page
@@ -234,6 +234,57 @@ app.controller('MainController', function($scope, $compile) {
         $.request("POST","/customers",data,function(){
             alert("Inserted");
         })
+    })
+
+    $("#insertProductPage .insert").click(function(){
+        var orderID   = $("#insertCartPage .orderID").val();
+        var prodID    = $("#insertCartPage .prodID").val();
+        var quanity = $("#insertCartPage .quanity").val();
+
+        var data = {
+             orderID:orderID
+            ,prodID:prodID
+            ,quanity:quanity
+        }
+
+        $.request("POST","/products",data,function(){
+            alert("Inserted");
+        })
+    })
+
+    $("#insertOrderPage .insert").click(function(){
+        var orderID   = $("#insertCartPage .orderID").val();
+        var prodID    = $("#insertCartPage .prodID").val();
+        var quanity = $("#insertCartPage .quanity").val();
+
+        var data = {
+             orderID:orderID
+            ,prodID:prodID
+            ,quanity:quanity
+        }
+
+        $.request("POST","/orders",data,function(){
+            alert("Inserted");
+        })
+    })
+
+    $("#insertCartPage .insert").click(function(){
+        var orderID   = $("#insertCartPage .orderID").val();
+        var prodID    = $("#insertCartPage .prodID").val();
+        var quantity = $("#insertCartPage .quanity").val();
+
+        var data = {
+             orderID:orderID
+            ,prodID:prodID
+            ,quantity:quantity
+        }
+
+        $.restService.insertCart(data, function(res){
+                                    alert(JSON.stringify(res));
+                                },
+                                function(res){
+                                    alert(JSON.stringify(res));
+                                })
     })
 
 });

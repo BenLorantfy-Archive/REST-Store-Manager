@@ -2,3 +2,4 @@
 /app/Client/dist/
 /app/Client/build/
 .idea/
+api/config.json
