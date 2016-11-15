@@ -5,8 +5,16 @@
 	<script type="text/javascript" src="js/lib/angular.min.js"></script>
 	<script type="text/javascript" src="js/lib/jquery-3.1.1.js"></script>
 	<script type="text/javascript" src="js/lib/request.js"></script>
+    <script type="text/javascript" src="js/lib/restService.js"></script>
+    <script type="text/javascript" src="js/lib/jspdf.js"></script>
+	<script type="text/javascript" src="js/lib/pdf.js"></script>
 </head>
 <body ng-app="app" ng-controller="MainController">
+<!--
+    <iframe src="file:///Applications/MAMP/htdocs/NADA4/app/Client/www/viewer/web/viewer.html">
+    
+    </iframe>
+-->
 	<header>
 		<div id="title">EasyManage 1.0</div>
 		<div id="pageStack">/ home /</div>
@@ -57,11 +65,11 @@
 	</section>
 
 	<section id="searchProductsPage" class="moveRight page">
-		<input class="textbox" type="text" placeholder="Product ID">
-		<input class="textbox" type="text" placeholder="Product Name">
-		<input class="textbox" type="text" placeholder="Price">
-		<input class="textbox" type="text" placeholder="Weight">
-		<input class="textbox" type="text" placeholder="In Stock">
+		<input class="textbox prodID" type="text" placeholder="Product ID">
+		<input class="textbox prodName" type="text" placeholder="Product Name">
+		<input class="textbox price" type="text" placeholder="Price">
+		<input class="textbox prodWeight" type="text" placeholder="Weight">
+		<input class="textbox inStock" type="text" placeholder="In Stock">
         
         
 		<nav-item hotkey="1" label="Results" page="searchProductsResults"></nav-item>
@@ -69,18 +77,18 @@
 	</section>
 
 	<section id="searchOrdersPage" class="moveRight page">
-		<input class="textbox" type="text" placeholder="Order ID">
-		<input class="textbox" type="text" placeholder="Customer ID">
-		<input class="textbox" type="text" placeholder="P.O. Number">
-		<input class="textbox" type="text" placeholder="Order Date">
+		<input class="textbox orderID" type="text" placeholder="Order ID">
+		<input class="textbox custID" type="text" placeholder="Customer ID">
+		<input class="textbox poNumber" type="text" placeholder="P.O. Number">
+		<input class="textbox orderDate" type="text" placeholder="Order Date">
 		<nav-item hotkey="1" label="Results" page="searchOrdersResults"></nav-item>
 		<nav-item hotkey="2" label="Back" page="back"></nav-item>
 	</section>
 
 	<section id="searchCartPage" class="moveRight page">
-		<input class="textbox" type="text" placeholder="Order ID">
-		<input class="textbox" type="text" placeholder="Product ID">
-		<input class="textbox" type="text" placeholder="Quanity">
+		<input class="textbox orderID" type="text" placeholder="Order ID">
+		<input class="textbox prodID" type="text" placeholder="Product ID">
+		<input class="textbox quanity" type="text" placeholder="Quanity">
         
         <!-- Joined fields -->
         <input class="textbox custID" type="text" placeholder="Customer ID"> <!-- ex 1 -->
@@ -90,6 +98,108 @@
 		<nav-item hotkey="2" label="Back" page="back"></nav-item>
 	</section>
 
+    <section id="purchaseOrderPage" class="moveRight page">
+        <div id="purchaseOrderHolder">
+            <table class="customerInfo">
+                <tr>
+                    <td>ID:</td>
+                    <td>1234</td>
+                </tr>
+                <tr>
+                    <td>Name:</td>
+                    <td>last, first</td>
+                </tr>
+                <tr>
+                    <td>Phone:</td>
+                    <td>123-356-3465</td>
+                </tr>
+            </table>        
+            <table class="purchaseInfo">
+                <tr>
+                    <td>PurchaseDate:</td>
+                    <td>10/23/1230</td>
+                </tr>
+                <tr>
+                    <td>P.O. Number:</td>
+                    <td>123435</td>
+                </tr>
+            </table>
+            <div class="clear"></div>
+            <div class="cartHolder">
+                <table class="items">
+                    <tr>
+                        <td>ID</td>
+                        <td>Name</td>
+                        <td>Quanity</td>
+                        <td>Unit Price</td>
+                        <td>Unit Weight</td>
+                    </tr>
+                    <tr>
+                        <td>123</td>
+                        <td>Blender</td>
+                        <td>5</td>
+                        <td>$1.23</td>
+                        <td>50 kg</td>
+                    </tr>
+                    <tr>
+                        <td>123</td>
+                        <td>Blender</td>
+                        <td>5</td>
+                        <td>$1.23</td>
+                        <td>50 kg</td>
+                    </tr>
+                    <tr>
+                        <td>123</td>
+                        <td>Blender</td>
+                        <td>5</td>
+                        <td>$1.23</td>
+                        <td>50 kg</td>
+                    </tr>
+                    <tr>
+                        <td>123</td>
+                        <td>Blender</td>
+                        <td>5</td>
+                        <td>$1.23</td>
+                        <td>50 kg</td>
+                    </tr>
+                    <tr>
+                        <td>123</td>
+                        <td>Blender</td>
+                        <td>5</td>
+                        <td>$1.23</td>
+                        <td>50 kg</td>
+                    </tr>
+                </table>
+                <table class="totals">
+                    <tr>
+                        <td>SubTotal</td>
+                        <td>$1234</td>
+                    </tr>
+                    <tr>
+                        <td>Tax (13%)</td>
+                        <td>124</td>
+                    </tr>
+                    <tr>
+                        <td>Total</td>
+                        <td>$2534</td>
+                    </tr>
+                </table>
+                <div class="clear"></div>
+                <table class="extra">
+                    <tr>
+                        <td>Total Number of Pieces in Order:</td>
+                        <td>23</td>
+                    </tr>
+                    <tr>
+                        <td>Total Weight of Order:</td>
+                        <td>1234 kg</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <nav-item hotkey="1" label="Print" page="none"></nav-item>
+        <nav-item hotkey="2" label="Back" page="back"></nav-item>
+    </section>
     
     
     <!--
@@ -292,5 +402,10 @@
     
     
 	<script type="text/javascript" src="js/index.js"></script>
+    
+<!--
+    <script type='text/javascript'
+     src='http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js'></script>
+-->
 </body>
 </html>

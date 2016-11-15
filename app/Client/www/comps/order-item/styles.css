@@ -6,3 +6,8 @@
 order-item{
 	display: table-row;
 }
+
+.col.apart{
+    background-color:transparent;
+    padding-left:5px;
+}
