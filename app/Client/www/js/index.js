@@ -92,10 +92,15 @@ app.controller('MainController', function($scope, $compile) {
 
 			// [ Render the customers ]
 			function renderCustomers(customers){
-                if(customers.length == 0){
-                    addError("No customer matches query");
+			    if (isError(customers)){
+                    showMessage(customers);
+                    var emptyList = "<customer-list></customer-list>";
+                    $("#searchCustomersResultsPage").find("customer-list").replaceWith(emptyList);
+                    $compile(emptyList)($scope);
+                    return;
                 }
-				var list = $("<customer-list></customer-list>");
+
+                var list = $("<customer-list></customer-list>");
 
 				$.each(customers,function(i,customer){
 					var el = $("<customer-item></customer-item>");
@@ -109,6 +114,9 @@ app.controller('MainController', function($scope, $compile) {
 					list.append(el);
 				});
 
+                if (customers.length == 0){
+                    showMessage({success:false,error:7});
+                }
 				$("#searchCustomersResultsPage").find("customer-list").replaceWith(list);
 				$compile(list)($scope);				
 			}
@@ -130,6 +138,14 @@ app.controller('MainController', function($scope, $compile) {
             $.request("GET","/products" + query).done(renderProducts);
 
             function renderProducts(products){
+                if (isError(products)){
+                    showMessage(products);
+                    var emptyList = "<product-list></product-list>";
+                    $("#searchProductsResultsPage").find("product-list").replaceWith(emptyList);
+                    $compile(emptyList)($scope);
+                    return;
+                }
+
                 var list = $("<product-list></product-list>");
 
                 $.each(products,function(i,product){
@@ -145,6 +161,9 @@ app.controller('MainController', function($scope, $compile) {
                     list.append(el);
                 });
 
+                if (products.length == 0){
+                    showMessage({success:false,error:7});
+                }
                 $("#searchProductsResultsPage").find("product-list").replaceWith(list);
                 $compile(list)($scope);
             }
@@ -164,6 +183,14 @@ app.controller('MainController', function($scope, $compile) {
             $.request("GET","/orders" + query).done(renderOrders);
 
             function renderOrders(orders){
+                if (isError(orders)){
+                    showMessage(orders);
+                    var emptyList = "<order-list></order-list>";
+                    $("#searchOrdersResultsPage").find("order-list").replaceWith(emptyList);
+                    $compile(emptyList)($scope);
+                    return;
+                }
+
                 var list = $("<order-list></order-list>");
 
                 $.each(orders,function(i,order){
@@ -178,6 +205,9 @@ app.controller('MainController', function($scope, $compile) {
                     list.append(el);
                 });
 
+                if (orders.length == 0){
+                    showMessage({success:false,error:7});
+                }
                 $("#searchOrdersResultsPage").find("order-list").replaceWith(list);
                 $compile(list)($scope);
             }
@@ -199,6 +229,14 @@ app.controller('MainController', function($scope, $compile) {
             $.request("GET","/carts" + query).done(renderCarts);
 
             function renderCarts(carts){
+                if (isError(carts)){
+                    showMessage(carts);
+                    var emptyList = "<cart-list></cart-list>";
+                    $("#searchCartResultsPage").find("cart-list").replaceWith(emptyList);
+                    $compile(emptyList)($scope);
+                    return;
+                }
+
                 var list = $("<cart-list></cart-list>");
 
                 $.each(carts,function(i,cart){
@@ -212,6 +250,9 @@ app.controller('MainController', function($scope, $compile) {
                     list.append(el);
                 });
 
+                if (carts.length == 0){
+                    showMessage({success:false,error:7});
+                }
                 $("#searchCartResultsPage").find("cart-list").replaceWith(list);
                 $compile(list)($scope);
             }
@@ -631,29 +672,29 @@ $("#deleteCustomerPage .delete").click(function(){
     var id = $("#deleteCustomerPage .custID").val();
 
     $.request("DELETE","/customers/" + id).done(function(data){
-
+        showMessage(data);
     }).fail(function(data){
-
+        showMessage(data);
     })        
 });    
 
 $("#deleteProductPage .delete").click(function(){
     var id = $("#deleteProductPage .prodID").val();
 
-    $.request("DELETE","/products/" + id).done(function(){
-
-    }).fail(function(){
-
+    $.request("DELETE","/products/" + id).done(function(data){
+        showMessage(data);
+    }).fail(function(data){
+        showMessage(data);
     })        
 }); 
 
 $("#deleteOrderPage .delete").click(function(){
     var id = $("#deleteOrderPage .orderID").val();
 
-    $.request("DELETE","/orders/" + id).done(function(){
-
-    }).fail(function(){
-
+    $.request("DELETE","/orders/" + id).done(function(data){
+        showMessage(data);
+    }).fail(function(data){
+        showMessage(data);
     })       
 });
 
@@ -663,10 +704,10 @@ $("#deleteCartPage .delete").click(function(){
 
     var id = orderId + "-" + prodId;
 
-    $.request("DELETE","/carts/" + id).done(function(){
-
-    }).fail(function(){
-
+    $.request("DELETE","/carts/" + id).done(function(data){
+        showMessage(data);
+    }).fail(function(data){
+        showMessage(data);
     })       
 });
 
@@ -674,6 +715,10 @@ $("#deleteCartPage .delete").click(function(){
 $(".page").each(function(){
     $(this).prepend('<div class="error"></div>');
 });
+
+function isError(data){
+    return (typeof data !== 'undefined' ? (typeof data['success'] !== 'undefined' ? !data['success'] : false): false);
+}
 
 function showMessage(data){
     var red = "#D15854";
@@ -689,6 +734,8 @@ function showMessage(data){
         errorText = "Unhandled exception happened";
     }else if (error == 2){
         errorText = "Empty field";
+    }else if (error == 7){
+        errorText = "No record found";
     }else if (error == 42){
         errorText = "Wrong phone number";
     }else if (error == 43){

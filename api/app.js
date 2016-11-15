@@ -92,7 +92,7 @@ app.post("/customers",function(req,res){
 	console.log(req.body);
 	
 	if (req.body.phoneNumber){
-		var regex = /^[\s()+-]*([0-9][\s()+-]*){6,20}$/;
+		var regex = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/;
 		
 		if (!regex.test(req.body.phoneNumber)
 			|| req.body.phoneNumber.length < 10){
@@ -168,7 +168,7 @@ app.put("/customers/:custID", function(req,res) {
 	console.log(req.body);
 	
 	if (req.body.phoneNumber){
-		var regex = /^[\s()+-]*([0-9][\s()+-]*){6,20}$/;
+		var regex = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/;
 		
 		if (!regex.test(req.body.phoneNumber)
 			|| req.body.phoneNumber.length < 10){
