@@ -339,30 +339,30 @@ app.get("/orders", function (req, res) {
 
     if (req.query.custID) {
         query.innerJoin('Customer', 'Order1.custID', 'Customer.custID')
-            .innerjoin('Cart', 'Order1.orderID', 'Cart.orderID')
-            .innerjoin('Product', 'Product.prodID', 'Cart.prodID')
+            .innerJoin('Cart', 'Order1.orderID', 'Cart.orderID')
+            .innerJoin('Product', 'Product.prodID', 'Cart.prodID')
         query.andWhere("Order1.custID", req.query.custID);
     }
 
     if(!req.query.custID) {
         if (req.query.firstName) {
             query.innerJoin('Customer', 'Order1.custID', 'Customer.custID')
-                .innerjoin('Cart', 'Order1.orderID', 'Cart.orderID')
-                .innerjoin('Product', 'Product.prodID', 'Cart.prodID')
+                .innerJoin('Cart', 'Order1.orderID', 'Cart.orderID')
+                .innerJoin('Product', 'Product.prodID', 'Cart.prodID')
             query.andWhere("Customer.firstName", req.query.firstName);
         }
 
         if (req.query.lastName) {
             query.innerJoin('Customer', 'Order1.custID', 'Customer.custID')
-                .innerjoin('Cart', 'Order1.orderID', 'Cart.orderID')
-                .innerjoin('Product', 'Product.prodID', 'Cart.prodID')
+                .innerJoin('Cart', 'Order1.orderID', 'Cart.orderID')
+                .innerJoin('Product', 'Product.prodID', 'Cart.prodID')
             query.andWhere("Customer.lastName", req.query.lastName);
         }
 
         if (req.query.phoneNumber) {
             query.innerJoin('Customer', 'Order1.custID', 'Customer.custID')
-                .innerjoin('Cart', 'Order1.orderID', 'Cart.orderID')
-                .innerjoin('Product', 'Product.prodID', 'Cart.prodID')
+                .innerJoin('Cart', 'Order1.orderID', 'Cart.orderID')
+                .innerJoin('Product', 'Product.prodID', 'Cart.prodID')
             query.andWhere("Customer.phoneNumber", req.query.phoneNumer);
         }
     }
@@ -370,6 +370,28 @@ app.get("/orders", function (req, res) {
     // console.log(query);
 
     query.then(function (orders) {
+
+        orders.forEach(function (row) {
+            if ( !(row.custID in index) ) {
+                index[row.custID] = {
+                    custID: row.custID,
+                    firstName: row.firstName,
+                    phoneNumber: row.phoneNumber,
+                    poNumber: row.poNumber,
+                    rows: []
+                };
+                result.push(index[row.custID]);
+            }
+            index[row.custID].rows.push({
+                prodName: row.prodName,
+                quantity: row.quantity,
+                price: row.price
+            });
+        });
+
+        console.log(result);
+
+
         res.end(JSON.stringify(orders));
     })
         .catch(function(err) {
@@ -581,13 +603,11 @@ app.delete("/carts/:cartID", function(req,res) {
 
 
 // [ Listen for requests ]
-<<<<<<< HEAD
+
 app.listen(8080, function () {
     console.log('Web server listening on port 80...');
-=======
-app.listen(1337, function () {
-    console.log('Web server listening on port 1337...');
->>>>>>> origin/master
+
+
 });
 
 //process.on('SIGTERM', function () {
