@@ -655,6 +655,29 @@ app.get("/orders", function (req, res) {
         });
 })
 
+// [ Purchase Order ]
+app.get("/orders/:orderID", function (req, res) {
+    var id = req.params.orderID;
+    var query = db
+        .select('*')
+        .from("Cart")
+        .where("Cart.orderID", id);
+
+    query.leftJoin('Order1','Cart.orderID','Order1.orderID');
+    query.leftJoin('Product', 'Cart.prodID', 'Product.prodID');
+    query.leftJoin('Customer','Order1.custID','Customer.custID');
+
+    query.then(function (orders) {
+        res.end(JSON.stringify(orders));
+    })
+        .catch(function(err) {
+            res.end(JSON.stringify({
+                success: false,
+                error: err.errno
+            }));
+        });
+})
+
 // [ Order Insert ]
 app.post("/orders", function (req, res) {
 	console.log('orders insert: ');
@@ -803,8 +826,7 @@ app.get("/carts", function (req, res) {
 
     var query = db
     // .select("orderID", "prodID", "quantity")
-        .select('*')
-        .from("Cart");
+        .select('*').from('Cart')
 
     if (req.query.orderID) {
         query.where("orderID", req.query.orderID);
