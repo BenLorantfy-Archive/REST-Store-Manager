@@ -802,7 +802,8 @@ app.get("/carts", function (req, res) {
 	console.log(req.query);
 	
     var query = db
-        .select("orderID", "prodID", "quantity")
+       // .select("orderID", "prodID", "quantity")
+        .select('*')
         .from("Cart");
 
     if (req.query.orderID) {
@@ -821,15 +822,13 @@ app.get("/carts", function (req, res) {
     }
 
     if(!req.query.prodID){
-        if(req.query.prodName){
-            query.select("*")
+        if(req.query.prodName)
             query.innerJoin('Product', 'Product.prodID', 'Cart.prodID')
             query.andWhere("Product.prodName", req.query.prodName);
         }
     }
 
     if(req.query.custID){
-        query.select("*")
         query.innerJoin('Order1', 'Order1.orderID', 'Cart.orderID')
             .innerJoin('Customer', 'Order1.custID', 'Customer.custID')
         query.andWhere("Order1.custID", req.query.custID);
