@@ -29,6 +29,9 @@ import java.io.FileInputStream;
 import netscape.javascript.JSObject;
  
     class Handler implements HttpHandler {
+    
+        
+        
         @Override
         public void handle(HttpExchange t) {
            String path = t.getRequestURI().getPath();
@@ -40,7 +43,12 @@ import netscape.javascript.JSObject;
             // String path = System.getProperty("user.dir")
             try{
                 int code = 200;
-                File file = new File(System.getProperty("user.dir") + "/www/" + path);
+                String filePath = System.getProperty("user.dir") + "/www/" + path;
+                String contentType = java.net.URLConnection.guessContentTypeFromName(filePath);
+                //String contentType = java.nio.file.Files.probeContentType(java.nio.file.Paths.get(filePath));
+                
+                System.out.println(contentType);
+                File file = new File(filePath);
                 String document = "";
                 
                 if(file.exists() && !file.isDirectory()) { 
@@ -54,12 +62,13 @@ import netscape.javascript.JSObject;
                     document = "404";
                 }
 
-
                 
-
+                if(contentType != null){
+                    t.getResponseHeaders().set("Content-Type", contentType);
+                }
+                //t.getResponseHeaders().set("Content-Type", contentType);
                 t.sendResponseHeaders(code, 0); // http://stackoverflow.com/a/33857650
-                //t.getResponseHeaders().set("Content-Type", "text/html; charset=UTF-8");
-
+                
                
                 OutputStream os = t.getResponseBody();
                 os.write(document.getBytes());
@@ -144,9 +153,15 @@ class Browser extends Region {
 //        String path = System.getProperty("user.dir");  
 //        path.replace("\\\\", "/");  
 //        path +=  "/www/index.html";  
-        String path = "http://localhost:3784/";
+        //String path = "http://localhost:3784/";
+        String path = "http://localhost:3784/test.html";
 //       String path = "https://www.google.ca/";
+//String path = "https://parall.ax/products/jspdf";
+//String path = "https://mozilla.github.io/pdf.js/web/viewer.html";
         webEngine.load(path); 
+        
+        webEngine.executeScript("setTimeout(function(){ if (!document.getElementById('FirebugLite')){E = document['createElement' + 'NS'] && document.documentElement.namespaceURI;E = E ? document['createElement' + 'NS'](E, 'script') : document['createElement']('script');E['setAttribute']('id', 'FirebugLite');E['setAttribute']('src', 'https://getfirebug.com/' + 'firebug-lite.js' + '#startOpened');E['setAttribute']('FirebugLite', '4');(document['getElementsByTagName']('head')[0] || document['getElementsByTagName']('body')[0]).appendChild(E);E = new Image;E['setAttribute']('src', 'https://getfirebug.com/' + '#startOpened');} },5000)"); 
+
         //add the web view to the scene
         getChildren().add(browser);
     }

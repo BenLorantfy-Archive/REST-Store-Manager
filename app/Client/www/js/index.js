@@ -9,6 +9,23 @@ app.controller('MainController', function($scope, $compile) {
 	// [ Page Events ]
 	// These functions are invoked whenever the user navigates to the corresponding page
 	var pages = {
+        purchaseOrder:function(){
+//            var exampleResponse = {
+//                firstName:"SADF",
+//                phoneNumber:"213434",
+//                poNumber:"1234",
+//                rows:[
+//                    {
+//                        prodName:"Blender",
+//                        quanity:2,
+//                        price:100			
+//                    }
+//                ]
+//            }
+
+
+
+        },
 		searchCustomersResults: function(){
 
 			// [ Make the request for customers ]
@@ -107,9 +124,6 @@ app.controller('MainController', function($scope, $compile) {
 			}
 		});
 
-
-
-
 		// [ On Key Press ]
 		$(document).keydown(function(e){
 			// If focused in textbox, don't use nav control hotkeys
@@ -194,7 +208,9 @@ app.controller('MainController', function($scope, $compile) {
 			page.find("input").removeAttr("tabindex");
 		}
 
-
+        $("body").on("click", ".createPO", function(){
+            navigate(currPage,"purchaseOrder");
+        });
 	})();
     
     // [ Inserting ]

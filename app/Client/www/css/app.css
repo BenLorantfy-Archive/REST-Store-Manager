@@ -13,6 +13,10 @@ html,body{
 	font-weight: 100;
 }
 
+*{
+    box-sizing: border-box;
+}
+
 header{
 	width:100%;
 	font-size:30px;
@@ -86,4 +90,85 @@ header{
 	padding-top:10px;
 	border:1px solid white;
 	background-color:rgba(0,0,0,0.1);;
+}
+
+#purchaseOrderHolder{
+    background-color:white;
+    border:1px solid black;
+    padding:20px;
+    margin-bottom: 10px;
+}
+
+.clear{
+    clear:both;
+}
+
+.customerInfo{
+    float:left;
+}
+
+.purchaseInfo{
+    float:right;
+}
+
+.customerInfo td, .purchaseInfo td{
+    padding:5px;
+}
+
+.cartHolder{
+    padding:20px;
+}
+
+.cartHolder table.items{
+    width:100%;
+    margin: 0;
+    padding:0;
+    border-collapse: collapse;
+}
+
+.cartHolder table.items td{
+    margin:0;
+}
+
+.cartHolder table.items td{
+    border-left:1px solid black;
+    border-right:1px solid black;
+}
+
+.cartHolder table.items tr:first-child td{
+    border:1px solid black;
+}
+
+.cartHolder table.items tr:last-child td{
+    border-bottom:1px solid black;
+}
+
+
+.cartHolder table.items td{
+    padding:10px;
+    text-align: center;
+}
+
+.cartHolder .totals{
+    border-collapse: collapse;
+}
+
+.cartHolder .totals td{
+    padding:10px;
+    border:1px solid black;
+}
+
+.cartHolder .totals{
+    float:right;
+    margin-top:10px;
+}
+
+.cartHolder .extra{
+    border-collapse: collapse;
+    margin-left:25%;   
+}
+
+.cartHolder .extra td{
+    padding:10px;
+    text-align: right;
 }
