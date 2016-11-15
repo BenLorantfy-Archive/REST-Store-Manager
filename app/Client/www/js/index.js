@@ -404,17 +404,67 @@ app.controller('MainController', function($scope, $compile) {
     })
 
     $("#insertProductPage .insert").click(function(){
+        $(".error").empty();
+        
+        var hasErrors = false;
         var prodName = $("#insertProductPage .productName").val();
         var price = $("#insertProductPage .price").val();
         var prodWeight = $("#insertProductPage .weight").val();
         var inStock = $("#insertProductPage .inStock").is(':checked') ? 1 : 0;
 
+        if(prodName == ""){
+            hasErrors = true;
+            addError("Product name is required");           
+        }else{
+             if(prodName.length > 100){
+                hasErrors = true;
+                addError("Product name must be less than 100 charachters");
+            }           
+        }
+
+        
+        if(price == ""){
+            hasErrors = true;
+            addError("Price is required");           
+        }else{
+            if(isNaN(price)){
+                hasErrors = true;
+                addError("Price must be a valid number");
+            }else{
+                if(price < 0){
+                    hasErrors = true;
+                    addError("Price must be positive");
+                }   
+            }           
+        }
+        
+        if(prodWeight == ""){
+            hasErrors = true;
+            addError("Weight is required");           
+        }else{
+            if(isNaN(prodWeight)){
+                hasErrors = true;
+                addError("Weight must be a valid number");
+            }else{
+                if(prodWeight <= 0){
+                    hasErrors = true;
+                    addError("Weight must be positive");
+                }   
+            }          
+        }
+ 
+
+        
+        if(hasErrors) return;
+        
         var data = {
              prodName:prodName
             ,price:price
             ,prodWeight:prodWeight
             ,inStock:inStock
         }
+        
+        
 
         $.restService.insertProduct(data, function(res){
                                     showMessage(res);
@@ -484,12 +534,48 @@ app.controller('MainController', function($scope, $compile) {
     })
 
     $("#updateProductPage .update").click(function(){
+        $(".error").empty();
+        hasErrors = false;
         var prodID   = $("#updateProductPage .prodID").val();
         var prodName = $("#updateProductPage .productName").val();
         var price = $("#updateProductPage .price").val();
         var prodWeight = $("#updateProductPage .weight").val();
         var inStock = $("#updateProductPage .inStock").is(':checked')  ? 1 : 0;
 
+        if(prodName != ""){
+            if(prodName.length > 100){
+                hasErrors = true;
+                addError("Product name must be less than 100 charachters");
+            }
+        }
+        
+        if(price != ""){
+            if(isNaN(price)){
+                hasErrors = true;
+                addError("Price must be a valid number");
+            }else{
+                if(price < 0){
+                    hasErrors = true;
+                    addError("Price must be positive");
+                }   
+            }            
+        }
+
+        if(prodWeight != ""){
+            if(isNaN(prodWeight)){
+                hasErrors = true;
+                addError("Weight must be a valid number");
+            }else{
+                if(prodWeight <= 0){
+                    hasErrors = true;
+                    addError("Weight must be positive");
+                }   
+            }            
+        }
+
+        
+        if(hasErrors) return;
+        
         var data = {
              prodName:prodName
             ,price:price
