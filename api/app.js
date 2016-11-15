@@ -91,6 +91,20 @@ app.post("/customers",function(req,res){
 	console.log('customers insert: ');
 	console.log(req.body);
 	
+	if (req.body.phoneNumber){
+		var regex = /^[\s()+-]*([0-9][\s()+-]*){6,20}$/;
+		
+		if (!regex.test(req.body.phoneNumber)
+			|| req.body.phoneNumber.length < 0){
+				res.end(JSON.stringify({
+					success: false,
+					error: 42
+				}));
+				console.log('wrong number: ' + req.body.phoneNumber)
+				return;
+			}
+	}
+	
     var query = db
         .insert({
             firstName: req.body.firstName,
@@ -115,6 +129,20 @@ app.post("/customers",function(req,res){
 app.put("/customers/:custID", function(req,res) {
 	console.log('customers update: ');
 	console.log(req.body);
+	
+	if (req.body.phoneNumber){
+		var regex = /^[\s()+-]*([0-9][\s()+-]*){6,20}$/;
+		
+		if (!regex.test(req.body.phoneNumber)
+			|| req.body.phoneNumber.length < 0){
+				res.end(JSON.stringify({
+					success: false,
+					error: 42
+				}));
+				console.log('wrong number: ' + req.body.phoneNumber)
+				return;
+			}
+	}
 	
     var query = db
         .update({
@@ -210,6 +238,48 @@ app.get("/products", function (req, res) {
 app.post("/products", function (req, res) {
 	console.log('products insert: ');
 	console.log(req.body);
+	
+	if (req.body.price){
+		var regex = /^[0-9.]+$/;
+		
+		if (!regex.test(req.body.price)
+			|| req.body.price.length < 0){
+				res.end(JSON.stringify({
+					success: false,
+					error: 42
+				}));
+				console.log('wrong number: ' + req.body.price)
+				return;
+			}
+	}
+	
+	if (req.body.prodWeight){
+		var regex = /^[0-9.]+$/;
+		
+		if (!regex.test(req.body.prodWeight)
+			|| req.body.prodWeight.length < 0){
+				res.end(JSON.stringify({
+					success: false,
+					error: 42
+				}));
+				console.log('wrong number: ' + req.body.prodWeight)
+				return;
+			}
+	}
+	
+	if (req.body.inStock){
+		var regex = /^(0|1)$/;
+		
+		if (!regex.test(req.body.inStock)
+			|| req.body.inStock.length < 0){
+				res.end(JSON.stringify({
+					success: false,
+					error: 42
+				}));
+				console.log('wrong number: ' + req.body.inStock)
+				return;
+			}
+	}
 	
     var query = db
         .insert({
