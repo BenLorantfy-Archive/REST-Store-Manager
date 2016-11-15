@@ -49,6 +49,22 @@ header{
 	color:#585859;
 }
 
+#messageBox{
+    position: absolute;
+    left: 300px;
+    top: 0px;
+    width: 500px;
+    height: 100px;
+    font-size: 16px;
+    padding: 10px;
+    padding-top: 20px;
+    text-align: center;
+    background: #D15854;
+
+    margin-top: -100px;
+    visibility: 0;
+}
+
 #debugMenu{
 	position: absolute;
 	bottom: 0;

@@ -70,6 +70,7 @@ app.controller('MainController', function($scope, $compile) {
         },
 		searchCustomersResults: function(){
 
+
 			// [ Make the request for customers ]
 			// The search should uses the query string, which is the most RESTful way of searching
 			// http://stackoverflow.com/a/1081720
@@ -395,10 +396,10 @@ app.controller('MainController', function($scope, $compile) {
         }
         
         $.restService.insertCustomer(data, function(res){
-                                            alert(JSON.stringify(res));
+                                            showMessage(res);
                                         },
                                         function(res){
-                                            alert(JSON.stringify(res));
+                                            showMessage(res);
                                         })
     })
 
@@ -416,10 +417,10 @@ app.controller('MainController', function($scope, $compile) {
         }
 
         $.restService.insertProduct(data, function(res){
-                                    alert(JSON.stringify(res));
+                                    showMessage(res);
                                 },
                                 function(res){
-                                    alert(JSON.stringify(res));
+                                    showMessage(res);
                                 })
     })
 
@@ -435,10 +436,10 @@ app.controller('MainController', function($scope, $compile) {
         }
 
         $.restService.insertOrder(data, function(res){
-                                    alert(JSON.stringify(res));
+                                    showMessage(res);
                                 },
                                 function(res){
-                                    alert(JSON.stringify(res));
+                                    showMessage(res);
                                 })
     })
 
@@ -454,10 +455,10 @@ app.controller('MainController', function($scope, $compile) {
         }
 
         $.restService.insertCart(data, function(res){
-                                    alert(JSON.stringify(res));
+                                    showMessage(res);
                                 },
                                 function(res){
-                                    alert(JSON.stringify(res));
+                                    showMessage(res);
                                 })
     })
 
@@ -475,10 +476,10 @@ app.controller('MainController', function($scope, $compile) {
         }
 
         $.restService.updateCustomer(custID, data, function(res){
-                                    alert(JSON.stringify(res));
+                                    showMessage(res);
                                 },
                                 function(res){
-                                    alert(JSON.stringify(res));
+                                    showMessage(res);
                                 })
     })
 
@@ -497,10 +498,10 @@ app.controller('MainController', function($scope, $compile) {
         }
 
         $.restService.updateProduct(prodID, data, function(res){
-                                    alert(JSON.stringify(res));
+                                    showMessage(res);
                                 },
                                 function(res){
-                                    alert(JSON.stringify(res));
+                                    showMessage(res);
                                 })
     })
 
@@ -517,10 +518,10 @@ app.controller('MainController', function($scope, $compile) {
         }
 
         $.restService.updateOrder(orderID, data, function(res){
-                                    alert(JSON.stringify(res));
+                                    showMessage(res);
                                 },
                                 function(res){
-                                    alert(JSON.stringify(res));
+                                    showMessage(res);
                                 })
     })
 
@@ -536,10 +537,10 @@ app.controller('MainController', function($scope, $compile) {
         var id = orderID + "-" + prodID;
 
         $.restService.updateCart(id, data, function(res){
-                                    alert(JSON.stringify(res));
+                                    showMessage(res);
                                 },
                                 function(res){
-                                    alert(JSON.stringify(res));
+                                    showMessage(res);
                                 })
     })
 
@@ -592,6 +593,22 @@ $("#deleteCartPage .delete").click(function(){
 $(".page").each(function(){
     $(this).prepend('<div class="error"></div>');
 });
+
+function showMessage(data){
+    var red = "#D15854";
+    var green = "#5DE88C";
+
+    var success = (typeof data !== 'undefined' ? (typeof data['success'] !== 'undefined' ? data['success'] : false): false);
+
+    $("#messageBox").css("background-color", success ? green : red)
+
+    $("#messageBox").html(success ? "Successful" : JSON.stringify(data));
+    $("#messageBox").animate({marginTop: "0px", opacity: "1"}, 600, function(){
+        $("#messageBox").delay(3000).animate({marginTop: "-100px", opacity: "0"}, 600, function(){
+            $("#messageBox").html("");
+        })
+    });
+}
 
 // [ Async load all the components ]
 // - Declutters the head tag in index.html
