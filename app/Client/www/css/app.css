@@ -49,20 +49,36 @@ header{
 	color:#585859;
 }
 
-#messageBox{
+#messageBoxHolder{
     position: absolute;
-    left: 300px;
-    top: 0px;
-    width: 500px;
-    height: 100px;
-    font-size: 16px;
-    padding: 10px;
-    padding-top: 20px;
+    top:10px;
+    left: 0;
+    width:100%;
+    font-size:18px;
     text-align: center;
-    background: #D15854;
+}
+
+#messageBox{
+    display: inline-block;
+    padding:10px;
+    border-radius: 10px;
+    text-align: center;
+    background: rgba(212,75,57,0.7);
+    border: 1px solid rgba(212,75,57,1);
+    width:200px;
 
     margin-top: -100px;
     visibility: 0;
+}
+
+#messageBox.error{
+    background: rgba(212,75,57,0.6);
+    border: 1px solid rgba(212,75,57,0.9);   
+}
+
+#messageBox.success{
+    background: rgba(68,189,63,0.6);
+    border: 1px solid rgba(68,189,63,0.9);   
 }
 
 #debugMenu{

@@ -404,7 +404,8 @@ app.controller('MainController', function($scope, $compile) {
 				pageLabelStack.push(toLabel);
 			}			
 
-            
+            // [ Clear everything ]
+            $("#" + currPage + "Page input").val("");
             
 			// [ Update page stack ]
 			var pageStackStr = "/ ";
@@ -737,7 +738,9 @@ function showMessage(data){
 
     var success = (typeof data !== 'undefined' ? (typeof data['success'] !== 'undefined' ? data['success'] : false): false);
 
-    $("#messageBox").css("background-color", success ? green : red)
+    $("#messageBox").removeClass("success").removeClass("error");
+    $("#messageBox").addClass(success ? "success" : "error");
+   // $("#messageBox").css("background-color", success ? green : red)
 
     var errorText = "";
     var error = (typeof data !== 'undefined' ? (typeof data['error'] !== 'undefined' ? data['error'] : -1): -1);
