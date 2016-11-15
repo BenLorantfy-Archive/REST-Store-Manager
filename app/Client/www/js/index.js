@@ -49,6 +49,9 @@ app.controller('MainController', function($scope, $compile) {
 
 			// [ Render the customers ]
 			function renderCustomers(customers){
+                if(customers.length == 0){
+                    addError("No customer matches query");
+                }
 				var list = $("<customer-list></customer-list>");
 
 				$.each(customers,function(i,customer){
@@ -173,9 +176,24 @@ app.controller('MainController', function($scope, $compile) {
 	};
 
 
+    var currPage = "";
+    function addError(message){
+        
+        $(".error").append($("<div>" + message + "</div>"));
+    
+        console.log(currPage);
+        console.log($("#" + currPage + "Page .error"));
+        $("#" + currPage + "Page .error").each(function(){
+            if(!$(this).is(":visible")){
+                $(this).slideToggle();
+            }
+        });
+    }
+    
+    
 	// [ Navigation ]
 	(function navigation(){
-		var currPage = $(".page").eq(0).attr("id").replace("Page","");
+		currPage = $(".page").eq(0).attr("id").replace("Page","");
 		var currPageLabel = currPage;
 		window.pageStack = [currPage];
 		window.pageLabelStack = [currPageLabel];
@@ -267,6 +285,9 @@ app.controller('MainController', function($scope, $compile) {
 
 		function navigate(fromPage,toPage){
             if(toPage=="none") return;
+            
+            $(".error").empty().hide();
+            
 			if(toPage == "back"){
 				pageStack.pop();
 				pageLabelStack.pop();
@@ -288,6 +309,8 @@ app.controller('MainController', function($scope, $compile) {
 				pageLabelStack.push(toLabel);
 			}			
 
+            
+            
 			// [ Update page stack ]
 			var pageStackStr = "/ ";
 			$.each(pageLabelStack, function(i,page){
@@ -445,6 +468,11 @@ $("#deleteCartPage .delete").click(function(){
     }).fail(function(){
 
     })       
+});
+
+// [ Add error containers ]
+$(".page").each(function(){
+    $(this).prepend('<div class="error"></div>');
 });
 
 // [ Async load all the components ]
