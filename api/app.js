@@ -227,8 +227,16 @@ app.put("/customers/:custID", function(req,res) {
         .where("custID", req.params.custID )
         .into('Customer');
 
-    query.then(function () {
-        res.end(JSON.stringify({success: true}));
+    query.then(function (data) {
+        if(data > 0) {
+            res.end(JSON.stringify({success: true}));
+        } else {
+            console.log("no rows found");
+            res.end(JSON.stringify({
+                success: false,
+                error: 7
+            }));
+        }
     })
         .catch(function(err) { 
 			console.log(err);
@@ -248,16 +256,25 @@ app.delete("/customers/:custID", function(req,res) {
         .where("custID", req.params.custID)
         .del();
 
-    query.then(function () {
-        res.end(JSON.stringify({success: true}));
-    })
-        .catch(function(err) { 
-			console.log(err);
+
+    query.then(function (data) {
+        if(data > 0) {
+            res.end(JSON.stringify({success: true}));
+        } else {
+            console.log("no rows found");
             res.end(JSON.stringify({
                 success: false,
-                error: err.errno
+                error: 7
             }));
-        });
+        }
+    })
+    .catch(function(err) {
+        console.log(err);
+        res.end(JSON.stringify({
+            success: false,
+            error: err.errno
+        }));
+    });
 
 })
 
@@ -481,8 +498,16 @@ app.put("/products/:prodID", function(req,res) {
         .where("prodID",req.params.prodID)
         .into('Product');
 
-    query.then(function () {
-        res.end(JSON.stringify({success: true}));
+    query.then(function (data) {
+        if(data > 0) {
+            res.end(JSON.stringify({success: true}));
+        } else {
+            console.log("no rows found");
+            res.end(JSON.stringify({
+                success: false,
+                error: 7
+            }));
+        }
     })
         .catch(function(err) { 
 			console.log(err);
@@ -502,8 +527,15 @@ app.delete("/products/:prodID", function(req,res) {
         .where("prodID", req.params.prodID)
         .del();
 
-    query.then(function () {
-        res.end(JSON.stringify({success: true}));
+    query.then(function (data) {
+        if(data > 0 ) {
+            res.end(JSON.stringify({success: true}));
+        } else {
+            res.end(JSON.stringify({
+                success: false,
+                error: 7
+            }));
+        }
     })
         .catch(function(err) { 
 			console.log(err);
@@ -713,8 +745,16 @@ app.put("/orders/:orderID", function(req,res) {
         .where("orderID",req.params.orderID)
         .into('Order1');
 
-    query.then(function () {
-        res.end(JSON.stringify({success: true}));
+    query.then(function (data) {
+        if(data > 0) {
+            res.end(JSON.stringify({success: true}));
+        } else {
+            console.log("no rows found");
+            res.end(JSON.stringify({
+                success: false,
+                error: 7
+            }));
+        }
     })
         .catch(function(err) { 
 			console.log(err);
@@ -735,8 +775,15 @@ app.delete("/orders/:orderID", function(req,res) {
 	.where("orderID",req.params.orderID)
 	.del();
 
-    query.then(function () {
-        res.end(JSON.stringify({success: true}));
+    query.then(function (data) {
+        if(data > 0 ) {
+            res.end(JSON.stringify({success: true}));
+        } else {
+            res.end(JSON.stringify({
+                success: false,
+                error: 7
+            }));
+        }
     })
         .catch(function(err) { 
 			console.log(err);
@@ -886,8 +933,16 @@ app.put("/carts/:cartID", function(req,res) {
         })
         .into('Cart');
 
-    query.then(function () {
-        res.end(JSON.stringify({success: true}));
+    query.then(function (data) {
+        if(data > 0) {
+            res.end(JSON.stringify({success: true}));
+        } else {
+            console.log("no rows found");
+            res.end(JSON.stringify({
+                success: false,
+                error: 7
+            }));
+        }
     })
         .catch(function(err) { 
 			console.log(err);
@@ -911,8 +966,15 @@ app.delete("/carts/:cartID", function(req,res) {
         })
         .del();
 
-    query.then(function () {
-        res.end(JSON.stringify({success: true}));
+    query.then(function (data) {
+        if(data > 0 ) {
+            res.end(JSON.stringify({success: true}));
+        } else {
+            res.end(JSON.stringify({
+                success: false,
+                error: 7
+            }));
+        }
     })
         .catch(function(err) { 
 			console.log(err);
