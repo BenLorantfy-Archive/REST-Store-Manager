@@ -50,6 +50,28 @@ app.get("/customers",function(req,res){
 	console.log('customers search: ');
 	console.log(req.query);
 	
+	if (req.query.firstName){
+		if (req.query.firstName.length > 50){
+				res.end(JSON.stringify({
+					success: false,
+					error: 43
+				}));
+				console.log('wrong first name: ' + req.query.firstName)
+				return;
+			}
+	}
+	
+	if (req.query.lastName){
+		if (req.query.lastName.length > 50){
+				res.end(JSON.stringify({
+					success: false,
+					error: 44
+				}));
+				console.log('wrong last name: ' + req.query.lastName)
+				return;
+			}
+	}
+	
     var query = db
         .select("custID","firstName","lastName","phoneNumber")
         .from("Customer");
