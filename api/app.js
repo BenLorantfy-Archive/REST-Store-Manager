@@ -58,7 +58,7 @@ app.get("/customers",function(req,res){
         query.where("custID", req.query.custID);
     }
 
-    //if custID is present, than these
+    //if custID is present, than these values are irrelevant
     if(!req.query.custID) {
         if (req.query.firstName) {
             query.andWhere("firstName", "like", "%" + req.query.firstName + "%");
@@ -103,7 +103,16 @@ app.post("/customers",function(req,res){
 				console.log('wrong number: ' + req.body.phoneNumber)
 				return;
 			}
-	}
+	} else {
+
+        res.end(JSON.stringify({
+            success: false,
+            error: 42
+        }));
+        console.log('no phone number: ' + req.body.phoneNumber)
+        return;
+
+    }
 	
     var query = db
         .insert({
