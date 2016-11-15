@@ -10,7 +10,7 @@ https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></
     
     
         <script>
-            
+            var lastId = 0;
             var i = 0;
             $.request.host = "http://localhost:1337/";
             
@@ -250,6 +250,7 @@ https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></
                 
                 var passed = true;
                 try{
+                    lastId = data[0].custID;
                     if(data[0].firstName != "Matilda"){
                         passed = false;
                     }
@@ -314,10 +315,44 @@ https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></
 				 
             }).fail(function(){
                 currentTest = 14;
-                assert(true,false);
+                assert(true,true);
             })
             },++i * 1000);
 			
+            setTimeout(function(){
+			// [ Test 15 ]
+            $.request("PUT","/customers/" + lastId,{
+                 firstName: "Sally"
+                ,lastName: "Brown"
+            }).done(function(data){
+                $.request("GET","/customers?custID=" + lastId).done(function(data){
+                    currentTest = 15;
+
+                    var passed = true;
+                    try{
+                        if(data[0].firstName != "Sally"){
+                            passed = false;
+                        }
+                        if(data[0].lastName != "Brown"){
+                            passed = false;
+                        }
+                    }catch(e){
+                        passed = false;
+                    }
+                    assert(true,passed);
+
+                }).fail(function(){
+                    currentTest = 15;
+                    assert(true,false);
+                })
+				 
+            }).fail(function(){
+                currentTest = 15;
+                assert(true,false);
+            })
+            },++i * 1000);
+            
+            
             setTimeout(function(){
 			// [ Test 16 ]
             $.request("GET","/customers?firstName=Matilda").done(function(data){
