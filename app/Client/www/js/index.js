@@ -184,12 +184,16 @@ app.controller('MainController', function($scope, $compile) {
             var custID = $("#searchOrdersPage .custID").val();
             var poNumber = $("#searchOrdersPage .poNumber").val();
             var orderDate = $("#searchOrdersPage .orderDate").val();
+            var firstName = $("#searchOrdersPage .firstName").val();
+            var lastName = $("#searchOrdersPage .lastName").val();
 
             var query = "?";
             if(orderID) query += "orderID=" + encodeURI(orderID) + "&";
             if(custID) query += "custID=" + encodeURI(custID) + "&";
             if(poNumber) query += "poNumber=" + encodeURI(poNumber) + "&";
             if(orderDate) query += "orderDate=" + encodeURI(orderDate) + "&";
+            if(firstName) query += "firstName=" + encodeURI(firstName) + "&";
+            if(lastName) query += "lastName=" + encodeURI(lastName) + "&";
 
             $.request("GET","/orders" + query).done(renderOrders);
 
