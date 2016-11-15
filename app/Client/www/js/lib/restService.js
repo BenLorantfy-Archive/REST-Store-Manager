@@ -37,8 +37,20 @@
     }
 
     // [Update]
-    $.restService.updateCart = function(content, success, error){
-        doRequest("/carts", "PUT", content, success, error)
+    $.restService.updateCustomer = function(path, content, success, error){
+        doRequest("/customers/" + path, "PUT", content, success, error)
+    }
+
+    $.restService.updateProduct = function(path, content, success, error){
+        doRequest("/products/" + path, "PUT", content, success, error)
+    }
+
+    $.restService.updateOrder = function(path, content, success, error){
+        doRequest("/orders/" + path, "PUT", content, success, error)
+    }
+
+    $.restService.updateCart = function(path, content, success, error){
+        doRequest("/carts/" + path, "PUT", content, success, error)
     }
 
     // [Delete]
