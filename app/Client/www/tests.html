@@ -22,24 +22,298 @@ https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></
                 }
             }
             
-            // [ Test 1]
-            $.request("GET","/customers?firstName='Joe'").done(function(data){
-                currentTest++;
+            // [ Test 1 ]
+            $.request("GET","/customers?firstName=Joe").done(function(data){
+                currentTest = 1;
                 
-                assert(data, {
-                    a:3
-                });
+                assert(data, JSON.parse('[{"custID":1,"firstName":"Joe","lastName":"Bzolay","phoneNumber":"555-555-1212"}]'));
             });
             
             // [ Test 2 ]
-            $.request("GET","/customers?firstName='Joe'").done(function(){
-                currentTest++;
+            $.request("GET","/products?prodName=Wandoozals").done(function(data){
+                currentTest = 2;
                 
-                assert({
-                    a:3
-                }, {
-                    a:3
-                });
+                // [{"prodID":2,"prodName":"Wandoozals","price":2.35,"prodWeight":0.532,"inStock":1}]
+                
+                var passed = true;
+                try{
+                    if(data[0].prodID != 2){
+                        passed = false;
+                    }
+                    if(data[0].prodName != "Wandoozals"){
+                        passed = false;
+                    }
+                    if(data[0].price != 2.35){
+                        passed = false;
+                    }
+                    if(data[0].prodWeight != 0.532){
+                        passed = false;
+                    }
+                    if(data[0].inStock != 1){
+                        passed = false;
+                    }
+                }catch(e){
+                    passed = false;
+                }
+                assert(true,passed);
+            });
+            
+            // [ Test 3 ]
+            $.request("GET","/orders?orderID=3").done(function(data){
+                currentTest = 3;
+                
+                var passed = true;
+                try{
+                    if(data[0].orderID != 3){
+                        passed = false;
+                    }
+                    if(data[0].custID != 3){
+                        passed = false;
+                    }
+                    if(data[0].orderDate != "2011-10-05T04:00:00.000Z"){
+                        passed = false;
+                    }
+                    if(data[0].poNumber != null){
+                        passed = false;
+                    }
+                }catch(e){
+                    passed = false;
+                }
+                assert(true,passed);               
+            });
+            
+            // [ Test 4 ]
+            $.request("GET","/customers?firstName=Matilda").done(function(data){
+                currentTest = 4;
+                      
+                assert(data,[]);               
+            });
+            
+            // [ Test 5 ]
+            $.request("GET","/customers?firstName=Matilda").done(function(data){
+                currentTest = 5;
+                      
+                assert(true,true);               
+            });
+            
+            // [ Test 6 ]
+            $.request("POST","/customers",{
+                 firstName:"Matilda"
+                ,lastName:"Waltzing"
+            }).done(function(data){
+                currentTest = 6;
+                
+                assert(data.error,true);           
+            });
+            
+            // [ Test 7 ]
+            $.request("POST","/customers",{
+                 firstName:"Matilda"
+                ,lastName:"Waltzing"
+            }).done(function(data){
+                currentTest = 7;
+                
+                assert(data.error,true);           
+            });
+            
+            // [ Test 8 ]
+            $.request("POST","/customers",{
+                 firstName:"Matilda"
+                ,lastName:"Waltzing"
+                ,phoneNumber:"555-8877"
+            }).done(function(data){
+                currentTest = 8;
+                
+                assert(data.error,true);           
+            });
+            
+            // [ Test 9 ]
+            $.request("POST","/customers",{
+                 firstName:"Matilda"
+                ,lastName:"Waltzing"
+                ,phoneNumber:"5556-555-8877"
+            }).done(function(data){
+                currentTest = 9;
+                
+                assert(data.error,true);           
+            });
+            
+            // [ Test 10 ]
+            var as = "";
+            for(var i =0; i < 50; i++){
+                i++;
+                as += "a";
+            }
+            $.request("GET","/customers?firstName=Matilda" + as).done(function(data){
+                currentTest = 10;
+                
+                assert(data.error,true);           
+            });
+            
+            // [ Test 11 ]
+            $.request("POST","/customers",{
+                 firstName:"Matilda"
+                ,lastName:"Waltzing"
+                ,phoneNumber:"5555558877"
+            }).done(function(data){
+                currentTest = 11;
+                
+                assert(data.error,true);           
+            });
+            
+            // [ Test 12 ]
+            $.request("POST","/customers",{
+                 firstName:"Matilda"
+                ,lastName:"Waltzing"
+                ,phoneNumber:"555-555-8877"
+            }).done(function(data){
+                currentTest = 12;
+                
+                assert(data.success,true);           
+            });
+            
+            // [ Test 13 ]
+            $.request("GET","/customers?firstName=Matilda").done(function(data){
+                currentTest = 13;
+                
+                var passed = true;
+                try{
+                    if(data[0].firstName != "Matilda"){
+                        passed = false;
+                    }
+                    if(data[0].lastName != "Waltzing"){
+                        passed = false;
+                    }
+                    if(data[0].phone != "555-555-8877"){
+                        passed = false;
+                    }
+                }catch(e){
+                    passed = false;
+                }
+                assert(true,passed);
+                        
+            });
+            
+			// [ Test 12 ]
+//            $.request("POST","/customers",{
+//				firstName : 'Matilda',
+//				lastName : 'Waltzing',
+//				phoneNumber : '555-555-8877'
+//			}).done(function(data){
+//			    currentTest = 12;
+//					$.request("GET","/customers?firstName=Matilda?lastName=Waltzing?phoneNumber=555-555-8877").done(function(data2){
+//					
+//                
+//					var passed = true;
+//				
+//					try{				
+//						if(data[0].firstName != 'Matilda'){
+//							passed = false;
+//						}
+//						if(data[0].lastName != 'Waltzing'){
+//							passed = false;
+//						}
+//						if(data[0].phoneNumber != '555-555-8877'){
+//							passed = false;
+//						}						
+//					}
+//					catch (e){
+//						passed = false;
+//					}
+//					
+//					assert(passed,true);
+//					 });
+//				 
+//            });
+			
+			// [ Test 14 ]
+            $.request("PUT","/customers",{
+                 firstName: "Sally"
+                ,lastName: "Brown"
+            }).done(function(data){
+			    currentTest = 14;
+				
+                assert(data.error, true);
+				 
+            });
+			
+			// [ Test 16 ]
+            $.request("GET","/customers?firstName=Matilda").done(function(data){
+			    currentTest = 16;
+					assert(data,[]);
+				 
+            });
+			
+			// [ Test 17 ]
+            $.request("GET","/products?inStock=0").done(function(data){
+                currentTest = 17;
+                
+                var passed = true;
+				
+				try{				
+					if(data[0].prodID != 3){
+						passed = false;
+					}
+					if(data[0].name != 'Kardoofals'){
+						passed = false;
+					}
+					if(data[0].price != 8.75){
+						passed = false;
+					}
+					if(data[0].weight != 5.650){
+						passed = false;
+					}
+					if(data[0].inStock != 0){
+						passed = false;
+					}
+				}
+				catch (e){
+					passed = false;
+				}
+				
+				assert(passed,true);
+            });
+			
+			// [ Test 29 ]
+            $.request("DELETE","/customers?lastName=Zklazyyx").done(function(data){
+			    currentTest = 18;
+					assert(data.error, true);
+				 
+            });
+			
+			// [ Test 30 ]
+            $.request("DELETE","/customers?lastName=Svitzinski").done(function(data){
+				currentTest = 19;
+				 $.request("GET","/customers?lastName=Svitzinski").done(function(data2){
+                
+                
+					assert(data2,[]);
+				 });
+
+            });
+			
+			// [ Test 32 ]
+            $.request("GET","/carts?prodID=2").done(function(data){
+                currentTest = 32;
+                
+                var passed = true;
+				
+				try{				
+					if(data[0].orderID != 1){
+						passed = false;
+					}
+					if(data[1].orderID != 2){
+						passed = false;
+					}
+					if(data[2].orderID != 1000){
+						passed = false;
+					}
+				}
+				catch (e){
+					passed = false;
+				}
+				
+				assert(passed,true);
             });
         </script>
     </body>
