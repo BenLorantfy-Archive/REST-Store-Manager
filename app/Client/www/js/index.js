@@ -28,7 +28,7 @@ app.controller('MainController', function($scope, $compile) {
                 $("#purchaseOrderPage .custID").text(rows[0].custID);
                 $("#purchaseOrderPage .custName").text(rows[0].lastName + ", " + rows[0].firstName);
                 $("#purchaseOrderPage .phone").text(rows[0].phoneNumber);
-                $("#purchaseOrderPage .date").text(rows[0].orderDate);
+                $("#purchaseOrderPage .date").text(moment(rows[0].orderDate).format("MM-DD-YY"));
                 $("#purchaseOrderPage .poNumber").text(rows[0].poNumber);
                 
                 // phone
@@ -171,7 +171,7 @@ app.controller('MainController', function($scope, $compile) {
                          "order-id": order.orderID
                         ,"customer-id": order.custID
                         ,"po-number": order.poNumber
-                        ,"order-date": order.orderDate
+                        ,"order-date": moment(order.orderDate).format("MM-DD-YY")
                     });
 
                     list.append(el);
