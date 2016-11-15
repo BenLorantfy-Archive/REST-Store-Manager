@@ -385,23 +385,66 @@ app.controller('MainController', function($scope, $compile) {
     })
 
     // [Update]
-    $("#deleteCartPage .delete").click(function(){
-        var orderID   = $("#deleteCartPage .orderID").val();
-        var prodID    = $("#deleteCartPage .prodID").val();
+//    $("#deleteCartPage .delete").click(function(){
+//        var orderID   = $("#deleteCartPage .orderID").val();
+//        var prodID    = $("#deleteCartPage .prodID").val();
+//
+//        var data = {
+//             orderID:orderID
+//            ,prodID:prodID
+//        }
+//
+//        $.restService.deleteCart(data, function(res){
+//                                    alert(JSON.stringify(res));
+//                                },
+//                                function(res){
+//                                    alert(JSON.stringify(res));
+//                                })
+//    })
 
-        var data = {
-             orderID:orderID
-            ,prodID:prodID
-        }
+});
 
-        $.restService.deleteCart(data, function(res){
-                                    alert(JSON.stringify(res));
-                                },
-                                function(res){
-                                    alert(JSON.stringify(res));
-                                })
-    })
+$("#deleteCustomerPage .delete").click(function(){
+    var id = $("#deleteCustomerPage .custID").val();
 
+    $.request("DELETE","/customers/" + id).done(function(){
+
+    }).fail(function(){
+
+    })        
+});    
+
+$("#deleteProductPage .delete").click(function(){
+    var id = $("#deleteProductPage .prodID").val();
+
+    $.request("DELETE","/products/" + id).done(function(){
+
+    }).fail(function(){
+
+    })        
+}); 
+
+$("#deleteOrderPage .delete").click(function(){
+    var id = $("#deleteOrderPage .orderID").val();
+
+    $.request("DELETE","/orders/" + id).done(function(){
+
+    }).fail(function(){
+
+    })       
+});
+
+$("#deleteCartPage .delete").click(function(){
+    var orderId = $("#deleteCartPage .orderID").val();
+    var prodId = $("#deleteCartPage .prodID").val();
+
+    var id = orderId + "-" + prodId;
+
+    $.request("DELETE","/carts/" + id).done(function(){
+
+    }).fail(function(){
+
+    })       
 });
 
 // [ Async load all the components ]

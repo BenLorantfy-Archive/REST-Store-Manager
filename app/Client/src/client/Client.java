@@ -153,8 +153,8 @@ class Browser extends Region {
 //        String path = System.getProperty("user.dir");  
 //        path.replace("\\\\", "/");  
 //        path +=  "/www/index.html";  
-        //String path = "http://localhost:3784/";
-        String path = "http://localhost:3784/test.html";
+        String path = "http://localhost:3784/";
+        //String path = "http://localhost:3784/test.html";
 //       String path = "https://www.google.ca/";
 //String path = "https://parall.ax/products/jspdf";
 //String path = "https://mozilla.github.io/pdf.js/web/viewer.html";
