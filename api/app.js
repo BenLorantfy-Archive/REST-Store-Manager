@@ -44,7 +44,7 @@ app.use(cors());
 // [ Customer Search ]
 app.get("/customers",function(req,res){
 	console.log('customers search: ');
-	console.log(req.body);
+	console.log(req.query);
 	
     var query = db
         .select("custID","firstName","lastName","phoneNumber")
@@ -156,7 +156,7 @@ app.delete("/customers/:custID", function(req,res) {
 // [ Product Search ]
 app.get("/products", function (req, res) {
 	console.log('products search: ');
-	console.log(req.body);
+	console.log(req.query);
 	
     var query = db
         .select("prodID", "prodName", "price", "prodWeight", "inStock")
@@ -275,7 +275,7 @@ app.delete("/products/:prodID", function(req,res) {
 // [ Order Search ]
 app.get("/orders", function (req, res) {
 	console.log('orders search: ');
-	console.log(req.body);
+	console.log(req.query);
 	
     var query = db
         //.select('orderID", "custID", "poNumber", "orderDate")
@@ -448,11 +448,11 @@ app.delete("/orders/:orderID", function(req,res) {
 // [ Cart Search ]
 app.get("/carts", function (req, res) {
 	console.log('carts search: ');
-	console.log(req.body);
+	console.log(req.query);
 	
     var query = db
         .select("orderID", "prodID", "quantity")
-        .from("Order1");
+        .from("Cart");
 
     if (req.query.orderID) {
         query.andWhere("orderID",req.query.orderID);

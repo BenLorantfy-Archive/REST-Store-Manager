@@ -2,6 +2,24 @@
     $.restService = function(){}
     $.restService.host = "";
 
+    // [Search]
+    $.restService.searchCustomer = function(query, success, error){
+        doRequest("/customers" + query, "GET", ({}), success, error)
+    }
+
+    $.restService.searchProduct = function(query, success, error){
+        doRequest("/products" + query, "GET", ({}), success, error)
+    }
+
+    $.restService.searchOrder = function(query, success, error){
+        doRequest("/orders" + query, "GET", ({}), success, error)
+    }
+
+    $.restService.searchCart = function(query, success, error){
+        doRequest("/carts" + query, "GET", ({}), success, error)
+    }
+
+    // [Insert]
     $.restService.insertCustomer = function(content, success, error){
         doRequest("/customers", "POST", content, success, error)
     }
@@ -16,6 +34,16 @@
 
     $.restService.insertCart = function(content, success, error){
         doRequest("/carts", "POST", content, success, error)
+    }
+
+    // [Update]
+    $.restService.updateCart = function(content, success, error){
+        doRequest("/carts", "PUT", content, success, error)
+    }
+
+    // [Delete]
+    $.restService.deleteCart = function(content, success, error){
+        doRequest("/carts", "DELETE", content, success, error)
     }
 
     function doRequest(path, type, content, success, error){

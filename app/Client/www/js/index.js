@@ -66,7 +66,110 @@ app.controller('MainController', function($scope, $compile) {
 				$("#searchCustomersResultsPage").find("customer-list").replaceWith(list);
 				$compile(list)($scope);				
 			}
-		}
+		},
+		searchProductsResults: function(){
+            var prodID   = $("#searchProductsPage .prodID").val();
+            var prodName = $("#searchProductsPage .prodName").val();
+            var price = $("#searchProductsPage .price").val();
+            var prodWeight = $("#searchProductsPage .prodWeight").val();
+            var inStock = $("#searchProductsPage .inStock").val();
+
+            var query = "?";
+            if(prodID) query += "prodID=" + encodeURI(prodID) + "&";
+            if(prodName) query += "prodName=" + encodeURI(prodName) + "&";
+            if(price) query += "price=" + encodeURI(price) + "&";
+            if(prodWeight) query += "prodWeight=" + encodeURI(prodWeight) + "&";
+            if(inStock) query += "inStock=" + encodeURI(inStock) + "&";
+
+            $.request("GET","/products" + query).done(renderProducts);
+
+            function renderProducts(products){
+                var list = $("<product-list></product-list>");
+
+                $.each(products,function(i,product){
+                    var el = $("<product-item></product-item>");
+                    el.attr({
+                         "product-id": product.prodID
+                        ,"name": product.prodName
+                        ,"price": product.price
+                        ,"weight": product.prodWeight
+                        ,"in-stock": product.inStock
+                    });
+
+                    list.append(el);
+                });
+
+                $("#searchProductsResultsPage").find("product-list").replaceWith(list);
+                $compile(list)($scope);
+            }
+		},
+		searchOrdersResults: function(){
+            var orderID   = $("#searchOrdersPage .orderID").val();
+            var custID = $("#searchOrdersPage .custID").val();
+            var poNumber = $("#searchOrdersPage .poNumber").val();
+            var orderDate = $("#searchOrdersPage .orderDate").val();
+
+            var query = "?";
+            if(orderID) query += "orderID=" + encodeURI(orderID) + "&";
+            if(custID) query += "custID=" + encodeURI(custID) + "&";
+            if(poNumber) query += "poNumber=" + encodeURI(poNumber) + "&";
+            if(orderDate) query += "orderDate=" + encodeURI(orderDate) + "&";
+
+            $.request("GET","/orders" + query).done(renderOrders);
+
+            function renderOrders(orders){
+                var list = $("<order-list></order-list>");
+
+                $.each(orders,function(i,order){
+                    var el = $("<order-item></order-item>");
+                    el.attr({
+                         "order-id": order.orderID
+                        ,"customer-id": order.custID
+                        ,"po-number": order.poNumber
+                        ,"order-date": order.orderDate
+                    });
+
+                    list.append(el);
+                });
+
+                $("#searchOrdersResultsPage").find("order-list").replaceWith(list);
+                $compile(list)($scope);
+            }
+        },
+        searchCartResults: function(){
+            var orderID   = $("#searchCartPage .orderID").val();
+            var prodID    = $("#searchCartPage .prodID").val();
+            var quantity = $("#searchCartPage .quanity").val();
+            var custID = $("#searchCartPage .custID").val();
+            var prodName = $("#searchCartPage .prodName").val();
+
+            var query = "?";
+            if(orderID) query += "orderID=" + encodeURI(orderID) + "&";
+            if(prodID) query += "prodID=" + encodeURI(prodID) + "&";
+            if(quantity) query += "quantity=" + encodeURI(quantity) + "&";
+            if(custID) query += "custID=" + encodeURI(custID) + "&";
+            if(prodName) query += "prodName=" + encodeURI(prodName) + "&";
+
+            $.request("GET","/carts" + query).done(renderCarts);
+
+            function renderCarts(carts){
+                var list = $("<cart-list></cart-list>");
+
+                $.each(carts,function(i,cart){
+                    var el = $("<cart-item></cart-item>");
+                    el.attr({
+                         "order-id": cart.orderID
+                        ,"product-id": cart.prodID
+                        ,"quanity": cart.quantity
+                    });
+
+                    list.append(el);
+                });
+
+                $("#searchCartResultsPage").find("cart-list").replaceWith(list);
+                $compile(list)($scope);
+            }
+        }
 	};
 
 
@@ -274,6 +377,24 @@ app.controller('MainController', function($scope, $compile) {
         }
 
         $.restService.insertCart(data, function(res){
+                                    alert(JSON.stringify(res));
+                                },
+                                function(res){
+                                    alert(JSON.stringify(res));
+                                })
+    })
+
+    // [Update]
+    $("#deleteCartPage .delete").click(function(){
+        var orderID   = $("#deleteCartPage .orderID").val();
+        var prodID    = $("#deleteCartPage .prodID").val();
+
+        var data = {
+             orderID:orderID
+            ,prodID:prodID
+        }
+
+        $.restService.deleteCart(data, function(res){
                                     alert(JSON.stringify(res));
                                 },
                                 function(res){
