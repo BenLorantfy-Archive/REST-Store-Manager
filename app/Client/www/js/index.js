@@ -75,7 +75,7 @@ app.controller('MainController', function($scope, $compile) {
             var prodName = $("#searchProductsPage .prodName").val();
             var price = $("#searchProductsPage .price").val();
             var prodWeight = $("#searchProductsPage .prodWeight").val();
-            var inStock = $("#searchProductsPage .inStock").val();
+            var inStock = $("#searchProductsPage .inStock").is(':checked')  ? 1 : 0;
 
             var query = "?";
             if(prodID) query += "prodID=" + encodeURI(prodID) + "&";
@@ -351,41 +351,52 @@ app.controller('MainController', function($scope, $compile) {
             ,phoneNumber:phoneNumber
         }
         
-        $.request("POST","/customers",data,function(){
-            alert("Inserted");
-        })
+        $.restService.insertCustomer(data, function(res){
+                                            alert(JSON.stringify(res));
+                                        },
+                                        function(res){
+                                            alert(JSON.stringify(res));
+                                        })
     })
 
     $("#insertProductPage .insert").click(function(){
-        var orderID   = $("#insertCartPage .orderID").val();
-        var prodID    = $("#insertCartPage .prodID").val();
-        var quanity = $("#insertCartPage .quanity").val();
+        var prodName = $("#insertProductPage .productName").val();
+        var price = $("#insertProductPage .price").val();
+        var prodWeight = $("#insertProductPage .weight").val();
+        var inStock = $("#insertProductPage .inStock").is(':checked') ? 1 : 0;
 
         var data = {
-             orderID:orderID
-            ,prodID:prodID
-            ,quanity:quanity
+             prodName:prodName
+            ,price:price
+            ,prodWeight:prodWeight
+            ,inStock:inStock
         }
 
-        $.request("POST","/products",data,function(){
-            alert("Inserted");
-        })
+        $.restService.insertProduct(data, function(res){
+                                    alert(JSON.stringify(res));
+                                },
+                                function(res){
+                                    alert(JSON.stringify(res));
+                                })
     })
 
     $("#insertOrderPage .insert").click(function(){
-        var orderID   = $("#insertCartPage .orderID").val();
-        var prodID    = $("#insertCartPage .prodID").val();
-        var quanity = $("#insertCartPage .quanity").val();
+        var custID = $("#insertOrderPage .custID").val();
+        var poNumber = $("#insertOrderPage .poNumber").val();
+        var orderDate = $("#insertOrderPage .orderDate").val();
 
         var data = {
-             orderID:orderID
-            ,prodID:prodID
-            ,quanity:quanity
+             custID:custID
+            ,poNumber:poNumber
+            ,orderDate:orderDate
         }
 
-        $.request("POST","/orders",data,function(){
-            alert("Inserted");
-        })
+        $.restService.insertOrder(data, function(res){
+                                    alert(JSON.stringify(res));
+                                },
+                                function(res){
+                                    alert(JSON.stringify(res));
+                                })
     })
 
     $("#insertCartPage .insert").click(function(){

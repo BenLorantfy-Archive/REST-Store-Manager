@@ -73,7 +73,8 @@ app.get("/customers",function(req,res){
     query.then(function (customers) {
             res.end(JSON.stringify(customers));
         })
-        .catch(function(err) {
+        .catch(function(err) { 
+			console.log(err);
             res.end(JSON.stringify({
                 success: false,
                 error: err.errno
@@ -97,7 +98,8 @@ app.post("/customers",function(req,res){
     query.then(function(){
         res.end(JSON.stringify({ success:true }));
     })
-        .catch(function(err) {
+        .catch(function(err) { 
+			console.log(err);
             res.end(JSON.stringify({
                 success: false,
                 error: err.errno
@@ -122,7 +124,8 @@ app.put("/customers/:custID", function(req,res) {
     query.then(function () {
         res.end(JSON.stringify({success: true}));
     })
-        .catch(function(err) {
+        .catch(function(err) { 
+			console.log(err);
             res.end(JSON.stringify({
                 success: false,
                 error: err.errno
@@ -143,7 +146,8 @@ app.delete("/customers/:custID", function(req,res) {
     query.then(function () {
         res.end(JSON.stringify({success: true}));
     })
-        .catch(function(err) {
+        .catch(function(err) { 
+			console.log(err);
             res.end(JSON.stringify({
                 success: false,
                 error: err.errno
@@ -190,7 +194,8 @@ app.get("/products", function (req, res) {
     query.then(function (products) {
         res.end(JSON.stringify(products));
     })
-        .catch(function(err) {
+        .catch(function(err) { 
+			console.log(err);
             res.end(JSON.stringify({
                 success: false,
                 error: err.errno
@@ -215,7 +220,8 @@ app.post("/products", function (req, res) {
     query.then(function () {
         res.end(JSON.stringify({success: true}));
     })
-        .catch(function(err) {
+        .catch(function(err) { 
+			console.log(err);
             res.end(JSON.stringify({
                 success: false,
                 error: err.errno
@@ -241,7 +247,8 @@ app.put("/products/:prodID", function(req,res) {
     query.then(function () {
         res.end(JSON.stringify({success: true}));
     })
-        .catch(function(err) {
+        .catch(function(err) { 
+			console.log(err);
             res.end(JSON.stringify({
                 success: false,
                 error: err.errno
@@ -262,7 +269,8 @@ app.delete("/products/:prodID", function(req,res) {
     query.then(function () {
         res.end(JSON.stringify({success: true}));
     })
-        .catch(function(err) {
+        .catch(function(err) { 
+			console.log(err);
             res.end(JSON.stringify({
                 success: false,
                 error: err.errno
@@ -372,7 +380,8 @@ app.get("/orders", function (req, res) {
     query.then(function (orders) {
         res.end(JSON.stringify(orders));
     })
-        .catch(function(err) {
+        .catch(function(err) { 
+			console.log(err);
             res.end(JSON.stringify({
                 success: false,
                 error: err.errno
@@ -396,7 +405,8 @@ app.post("/orders", function (req, res) {
     query.then(function () {
         res.end(JSON.stringify({success: true}));
     })
-        .catch(function(err) {
+        .catch(function(err) { 
+			console.log(err);
             res.end(JSON.stringify({
                 success: false,
                 error: err.errno
@@ -421,7 +431,8 @@ app.put("/orders/:orderID", function(req,res) {
     query.then(function () {
         res.end(JSON.stringify({success: true}));
     })
-        .catch(function(err) {
+        .catch(function(err) { 
+			console.log(err);
             res.end(JSON.stringify({
                 success: false,
                 error: err.errno
@@ -442,7 +453,8 @@ app.delete("/orders/:orderID", function(req,res) {
     query.then(function () {
         res.end(JSON.stringify({success: true}));
     })
-        .catch(function(err) {
+        .catch(function(err) { 
+			console.log(err);
             res.end(JSON.stringify({
                 success: false,
                 error: err.errno
@@ -495,7 +507,8 @@ app.get("/carts", function (req, res) {
     query.then(function (carts) {
         res.end(JSON.stringify(carts));
     })
-        .catch(function(err) {
+        .catch(function(err) { 
+			console.log(err);
             res.end(JSON.stringify({
                 success: false,
                 error: err.errno
@@ -519,7 +532,8 @@ app.post("/carts", function (req, res) {
         query.then(function () {
             res.end(JSON.stringify({success: true}));
         })
-        .catch(function(err) {
+        .catch(function(err) { 
+			console.log(err);
             res.end(JSON.stringify({
                 success: false,
                 error: err.errno
@@ -546,7 +560,8 @@ app.put("/carts/:cartID", function(req,res) {
     query.then(function () {
         res.end(JSON.stringify({success: true}));
     })
-        .catch(function(err) {
+        .catch(function(err) { 
+			console.log(err);
             res.end(JSON.stringify({
                 success: false,
                 error: err.errno
@@ -570,7 +585,8 @@ app.delete("/carts/:cartID", function(req,res) {
     query.then(function () {
         res.end(JSON.stringify({success: true}));
     })
-        .catch(function(err) {
+        .catch(function(err) { 
+			console.log(err);
             res.end(JSON.stringify({
                 success: false,
                 error: err.errno
@@ -582,8 +598,8 @@ app.delete("/carts/:cartID", function(req,res) {
 
 // [ Listen for requests ]
 
-app.listen(8080, function () {
-    console.log('Web server listening on port 80...');
+app.listen(1337, function () {
+    console.log('Web server listening on port 1337...');
 
 
 });
