@@ -140,7 +140,7 @@ https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></
             }).done(function(data){
                 currentTest = 6;
                 
-                assert(data.error,true);           
+                assert(!data.success,true);           
             }).fail(function(){
                 currentTest = 6;
                 assert(true,false);
@@ -155,7 +155,7 @@ https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></
             }).done(function(data){
                 currentTest = 7;
                 
-                assert(data.error,true);           
+                assert(!data.success,true);           
             }).fail(function(){
                 currentTest = 7;
                 assert(true,false);
@@ -171,7 +171,7 @@ https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></
             }).done(function(data){
                 currentTest = 8;
                 
-                assert(data.error,true);           
+                assert(!data.success,true);           
             }).fail(function(){
                 currentTest = 8;
                 assert(true,false);
@@ -187,7 +187,7 @@ https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></
             }).done(function(data){
                 currentTest = 9;
                 
-                assert(data.error,true);           
+                assert(!data.success,true);           
             }).fail(function(){
                 currentTest = 9;
                 assert(true,false);
@@ -204,7 +204,7 @@ https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></
             $.request("GET","/customers?firstName=Matilda" + as).done(function(data){
                 currentTest = 10;
                 
-                assert(data.error,true);           
+                assert(!data.success,true);           
             }).fail(function(){
                 currentTest = 10;
                 assert(true,false);
@@ -220,7 +220,7 @@ https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></
             }).done(function(data){
                 currentTest = 11;
                 
-                assert(data.error,true);           
+                assert(!data.success,true);           
             }).fail(function(){
                 currentTest = 11;
                 assert(true,false);
@@ -310,7 +310,7 @@ https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></
             }).done(function(data){
 			    currentTest = 14;
 				
-                assert(data.error, true);
+                assert(!data.success, true);
 				 
             }).fail(function(){
                 currentTest = 14;
@@ -370,7 +370,7 @@ https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></
 			// [ Test 29 ]
             $.request("DELETE","/customers?lastName=Zklazyyx").done(function(data){
 			    currentTest = 18;
-					assert(data.error, true);
+					assert(!data.success, true);
 				 
             }).fail(function(){
                 currentTest = 18;
