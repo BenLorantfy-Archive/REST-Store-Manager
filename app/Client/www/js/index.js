@@ -412,7 +412,7 @@ app.controller('MainController', function($scope, $compile) {
         var prodWeight = $("#insertProductPage .weight").val();
         var inStock = $("#insertProductPage .inStock").is(':checked') ? 1 : 0;
 
-        if(prodName == ""){
+        /*if(prodName == ""){
             hasErrors = true;
             addError("Product name is required");           
         }else{
@@ -422,7 +422,6 @@ app.controller('MainController', function($scope, $compile) {
             }           
         }
 
-        
         if(price == ""){
             hasErrors = true;
             addError("Price is required");           
@@ -452,10 +451,8 @@ app.controller('MainController', function($scope, $compile) {
                 }   
             }          
         }
- 
-
         
-        if(hasErrors) return;
+        if(hasErrors) return;*/
         
         var data = {
              prodName:prodName
@@ -463,8 +460,6 @@ app.controller('MainController', function($scope, $compile) {
             ,prodWeight:prodWeight
             ,inStock:inStock
         }
-        
-        
 
         $.restService.insertProduct(data, function(res){
                                     showMessage(res);
@@ -542,7 +537,7 @@ app.controller('MainController', function($scope, $compile) {
         var prodWeight = $("#updateProductPage .weight").val();
         var inStock = $("#updateProductPage .inStock").is(':checked')  ? 1 : 0;
 
-        if(prodName != ""){
+        /*if(prodName != ""){
             if(prodName.length > 100){
                 hasErrors = true;
                 addError("Product name must be less than 100 charachters");
@@ -574,7 +569,7 @@ app.controller('MainController', function($scope, $compile) {
         }
 
         
-        if(hasErrors) return;
+        if(hasErrors) return;*/
         
         var data = {
              prodName:prodName
@@ -635,9 +630,9 @@ app.controller('MainController', function($scope, $compile) {
 $("#deleteCustomerPage .delete").click(function(){
     var id = $("#deleteCustomerPage .custID").val();
 
-    $.request("DELETE","/customers/" + id).done(function(){
+    $.request("DELETE","/customers/" + id).done(function(data){
 
-    }).fail(function(){
+    }).fail(function(data){
 
     })        
 });    
@@ -682,15 +677,45 @@ $(".page").each(function(){
 
 function showMessage(data){
     var red = "#D15854";
-    var green = "#5DE88C";
+    var green = "#53CE7D";
 
     var success = (typeof data !== 'undefined' ? (typeof data['success'] !== 'undefined' ? data['success'] : false): false);
 
     $("#messageBox").css("background-color", success ? green : red)
 
-    $("#messageBox").html(success ? "Successful" : JSON.stringify(data));
-    $("#messageBox").animate({marginTop: "0px", opacity: "1"}, 600, function(){
-        $("#messageBox").delay(3000).animate({marginTop: "-100px", opacity: "0"}, 600, function(){
+    var errorText = "";
+    var error = (typeof data !== 'undefined' ? (typeof data['error'] !== 'undefined' ? data['error'] : -1): -1);
+    if (error == -1){
+        errorText = "Unhandled exception happened";
+    }else if (error == 2){
+        errorText = "Empty field";
+    }else if (error == 42){
+        errorText = "Wrong phone number";
+    }else if (error == 43){
+        errorText = "Wrong first name";
+    }else if (error == 44){
+        errorText = "Wrong last name";
+    }else if (error == 32){
+        errorText = "Wrong price";
+    }else if (error == 33){
+        errorText = "Wrong weight";
+    }else if (error == 34){
+        errorText = "Wrong 'in stock' value";
+    }else if (error == 22){
+        errorText = "Wrong order date";
+    }else if (error == 12){
+        errorText = "Wrong quantity";
+    }else if (error == 1366){
+        errorText = "Wrong data";
+    }else if (error == 1452){
+        errorText = "Wrong key id";
+    }else{
+        errorText = "Unknown error occurred. See code " + error + " for reference.";
+    }
+
+    $("#messageBox").html(success ? "Successful" : errorText);
+    $("#messageBox").animate({marginTop: "0px", opacity: "1"}, 600, "easeOutCubic", function(){
+        $("#messageBox").delay(2000).animate({marginTop: "-100px", opacity: "0"}, 600, "easeInCubic", function(){
             $("#messageBox").html("");
         })
     });

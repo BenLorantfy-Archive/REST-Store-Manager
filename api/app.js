@@ -95,7 +95,7 @@ app.post("/customers",function(req,res){
 		var regex = /^[\s()+-]*([0-9][\s()+-]*){6,20}$/;
 		
 		if (!regex.test(req.body.phoneNumber)
-			|| req.body.phoneNumber.length < 0){
+			|| req.body.phoneNumber.length < 10){
 				res.end(JSON.stringify({
 					success: false,
 					error: 42
@@ -103,15 +103,43 @@ app.post("/customers",function(req,res){
 				console.log('wrong number: ' + req.body.phoneNumber)
 				return;
 			}
-	} else {
-
-        res.end(JSON.stringify({
-            success: false,
-            error: 42
-        }));
-        console.log('no phone number: ' + req.body.phoneNumber)
-        return;
-
+	}else{
+		res.end(JSON.stringify({
+					success: false,
+					error: 2
+				}));
+				console.log('Empty field: req.body.phoneNumber')
+				return;
+	}
+	
+	if (req.body.firstName){
+		if (req.body.firstName.length > 50){
+				res.end(JSON.stringify({
+					success: false,
+					error: 43
+				}));
+				console.log('wrong first name: ' + req.body.firstName)
+				return;
+			}
+	}
+	
+	if (req.body.lastName){
+		if (req.body.lastName.length < 1
+			|| req.body.lastName.length > 50){
+				res.end(JSON.stringify({
+					success: false,
+					error: 44
+				}));
+				console.log('wrong last name: ' + req.body.lastName)
+				return;
+			}
+	}else{
+		res.end(JSON.stringify({
+					success: false,
+					error: 2
+				}));
+				console.log('Empty field: req.body.lastName')
+				return;
     }
 	
     var query = db
@@ -143,7 +171,7 @@ app.put("/customers/:custID", function(req,res) {
 		var regex = /^[\s()+-]*([0-9][\s()+-]*){6,20}$/;
 		
 		if (!regex.test(req.body.phoneNumber)
-			|| req.body.phoneNumber.length < 0){
+			|| req.body.phoneNumber.length < 10){
 				res.end(JSON.stringify({
 					success: false,
 					error: 42
@@ -151,6 +179,43 @@ app.put("/customers/:custID", function(req,res) {
 				console.log('wrong number: ' + req.body.phoneNumber)
 				return;
 			}
+	}else{
+		res.end(JSON.stringify({
+					success: false,
+					error: 2
+				}));
+				console.log('Empty field: req.body.price')
+				return;
+	}
+	
+	if (req.body.firstName){
+		if (req.body.firstName.length > 50){
+				res.end(JSON.stringify({
+					success: false,
+					error: 43
+				}));
+				console.log('wrong first name: ' + req.body.firstName)
+				return;
+			}
+	}
+	
+	if (req.body.lastName){
+		if (req.body.lastName.length < 1
+			|| req.body.lastName.length > 50){
+				res.end(JSON.stringify({
+					success: false,
+					error: 44
+				}));
+				console.log('wrong last name: ' + req.body.lastName)
+				return;
+			}
+	}else{
+		res.end(JSON.stringify({
+					success: false,
+					error: 2
+				}));
+				console.log('Empty field: req.body.lastName')
+				return;
 	}
 	
     var query = db
@@ -248,46 +313,70 @@ app.post("/products", function (req, res) {
 	console.log('products insert: ');
 	console.log(req.body);
 	
-	if (req.body.price){
-		var regex = /^[0-9.]+$/;
+	if (req.body.price
+		|| req.body.price === 0){
+		var regex = /^[0-9.,]+$/;
 		
 		if (!regex.test(req.body.price)
-			|| req.body.price.length < 0){
+			|| req.body.price.length < 1){
 				res.end(JSON.stringify({
 					success: false,
-					error: 42
+					error: 32
 				}));
-				console.log('wrong number: ' + req.body.price)
+				console.log('wrong price: ' + req.body.price)
 				return;
 			}
+	}else{
+		res.end(JSON.stringify({
+					success: false,
+					error: 2
+				}));
+				console.log('Empty field: req.body.price')
+				return;
 	}
 	
-	if (req.body.prodWeight){
-		var regex = /^[0-9.]+$/;
+	if (req.body.prodWeight
+		|| req.body.prodWeight === 0){
+		var regex = /^[0-9.,]+$/;
 		
 		if (!regex.test(req.body.prodWeight)
-			|| req.body.prodWeight.length < 0){
+			|| req.body.prodWeight.length < 1){
 				res.end(JSON.stringify({
 					success: false,
-					error: 42
+					error: 33
 				}));
-				console.log('wrong number: ' + req.body.prodWeight)
+				console.log('wrong product weight: ' + req.body.prodWeight)
 				return;
 			}
+	}else{
+		res.end(JSON.stringify({
+					success: false,
+					error: 2
+				}));
+				console.log('Empty field: req.body.prodWeight')
+				return;
 	}
 	
-	if (req.body.inStock){
+	if (req.body.inStock
+		|| req.body.inStock === 0){
 		var regex = /^(0|1)$/;
 		
 		if (!regex.test(req.body.inStock)
-			|| req.body.inStock.length < 0){
+			|| req.body.inStock.length < 1){
 				res.end(JSON.stringify({
 					success: false,
-					error: 42
+					error: 34
 				}));
-				console.log('wrong number: ' + req.body.inStock)
+				console.log('wrong inStock: ' + req.body.inStock)
 				return;
 			}
+	}else{
+		res.end(JSON.stringify({
+					success: false,
+					error: 2
+				}));
+				console.log('Empty field: req.body.inStock')
+				return;
 	}
 	
     var query = db
@@ -315,6 +404,72 @@ app.post("/products", function (req, res) {
 app.put("/products/:prodID", function(req,res) {
 	console.log('products update: ');
 	console.log(req.body);
+	
+	if (req.body.price
+		|| req.body.price === 0){
+		var regex = /^[0-9.,]+$/;
+		
+		if (!regex.test(req.body.price)
+			|| req.body.price.length < 1){
+				res.end(JSON.stringify({
+					success: false,
+					error: 32
+				}));
+				console.log('wrong price: ' + req.body.price)
+				return;
+			}
+	}else{
+		res.end(JSON.stringify({
+					success: false,
+					error: 2
+				}));
+				console.log('Empty field: req.body.price')
+				return;
+	}
+	
+	if (req.body.prodWeight
+		|| req.body.prodWeight === 0){
+		var regex = /^[0-9.,]+$/;
+		
+		if (!regex.test(req.body.prodWeight)
+			|| req.body.prodWeight.length < 1){
+				res.end(JSON.stringify({
+					success: false,
+					error: 33
+				}));
+				console.log('wrong product weight: ' + req.body.prodWeight)
+				return;
+			}
+	}else{
+		res.end(JSON.stringify({
+					success: false,
+					error: 2
+				}));
+				console.log('Empty field: req.body.prodWeight')
+				return;
+	}
+	
+	if (req.body.inStock
+		|| req.body.inStock === 0){
+		var regex = /^(0|1)$/;
+		
+		if (!regex.test(req.body.inStock)
+			|| req.body.inStock.length < 1){
+				res.end(JSON.stringify({
+					success: false,
+					error: 34
+				}));
+				console.log('wrong inStock: ' + req.body.inStock)
+				return;
+			}
+	}else{
+		res.end(JSON.stringify({
+					success: false,
+					error: 2
+				}));
+				console.log('Empty field: req.body.inStock')
+				return;
+	}
 	
     var query = db
         .update({
@@ -456,8 +611,6 @@ app.get("/orders", function (req, res) {
         }
     }
 
-    // console.log(query);
-
     query.then(function (orders) {
         res.end(JSON.stringify(orders));
     })
@@ -470,32 +623,43 @@ app.get("/orders", function (req, res) {
         });
 })
 
-app.get("/orders/:orderID", function (req, res) {
-    var id = req.params.orderID;
-    var query = db
-        .select('*')
-        .from("Cart")
-        .where("Cart.orderID", id);
-    
-    query.leftJoin('Order1','Cart.orderID','Order1.orderID');
-    query.leftJoin('Product', 'Cart.prodID', 'Product.prodID');
-    query.leftJoin('Customer','Order1.custID','Customer.custID'); 
-
-    query.then(function (orders) {
-        res.end(JSON.stringify(orders));
-    })
-    .catch(function(err) {
-        res.end(JSON.stringify({
-            success: false,
-            error: err.errno
-        }));
-    });
-})
-
 // [ Order Insert ]
 app.post("/orders", function (req, res) {
 	console.log('orders insert: ');
 	console.log(req.body);
+
+	// Seems like we don't need this validation	
+	/*if (req.body.poNumber){
+		var regex = /^[A-Za-z]{4}-[0-9]{2}-[0-9]{4}-[0-9]{3}$/;
+		
+		if (!regex.test(req.body.poNumber)
+			|| req.body.poNumber.length < 1){
+				res.end(JSON.stringify({
+					success: false,
+					error: 42
+				}));
+				console.log('wrong number: ' + req.body.poNumber)
+				return;
+			}
+	}*/
+	
+	if (req.body.orderDate){
+		if (req.body.orderDate.length < 1){
+				res.end(JSON.stringify({
+					success: false,
+					error: 22
+				}));
+				console.log('wrong order date: ' + req.body.orderDate)
+				return;
+			}
+	}else{
+		res.end(JSON.stringify({
+					success: false,
+					error: 2
+				}));
+				console.log('Empty field: req.body.orderDate')
+				return;
+	}
 	
     var query = db
         .insert({
@@ -521,6 +685,24 @@ app.post("/orders", function (req, res) {
 app.put("/orders/:orderID", function(req,res) {
 	console.log('orders update: ');
 	console.log(req.body);
+	
+	if (req.body.orderDate){
+		if (req.body.orderDate.length < 1){
+				res.end(JSON.stringify({
+					success: false,
+					error: 22
+				}));
+				console.log('wrong order date: ' + req.body.orderDate)
+				return;
+			}
+	}else{
+		res.end(JSON.stringify({
+					success: false,
+					error: 2
+				}));
+				console.log('Empty field: req.body.orderDate')
+				return;
+	}
 	
     var query = db
         .update({
@@ -624,6 +806,28 @@ app.post("/carts", function (req, res) {
 	console.log('carts insert: ');
 	console.log(req.body);
 	
+	if (req.body.quantity
+		|| req.body.quantity === 0){
+		var regex = /^[0-9]+$/;
+		
+		if (!regex.test(req.body.quantity)
+			|| req.body.quantity.length < 1){
+				res.end(JSON.stringify({
+					success: false,
+					error: 12
+				}));
+				console.log('wrong quantity: ' + req.body.quantity)
+				return;
+			}
+	}else{
+		res.end(JSON.stringify({
+					success: false,
+					error: 2
+				}));
+				console.log('Empty field: req.body.quantity')
+				return;
+	}
+	
     var query = db
         .insert({
             orderID: req.body.orderID,
@@ -649,6 +853,28 @@ app.post("/carts", function (req, res) {
 app.put("/carts/:cartID", function(req,res) {
     console.log('carts update: ');
 	console.log(req.body);
+	
+	if (req.body.quantity
+		|| req.body.quantity === 0){
+		var regex = /^[0-9]+$/;
+		
+		if (!regex.test(req.body.quantity)
+			|| req.body.quantity.length < 1){
+				res.end(JSON.stringify({
+					success: false,
+					error: 12
+				}));
+				console.log('wrong quantity: ' + req.body.quantity)
+				return;
+			}
+	}else{
+		res.end(JSON.stringify({
+					success: false,
+					error: 2
+				}));
+				console.log('Empty field: req.body.quantity')
+				return;
+	}
 	
 	var query = db
         .update({
