@@ -370,28 +370,6 @@ app.get("/orders", function (req, res) {
     // console.log(query);
 
     query.then(function (orders) {
-
-        orders.forEach(function (row) {
-            if ( !(row.custID in index) ) {
-                index[row.custID] = {
-                    custID: row.custID,
-                    firstName: row.firstName,
-                    phoneNumber: row.phoneNumber,
-                    poNumber: row.poNumber,
-                    rows: []
-                };
-                result.push(index[row.custID]);
-            }
-            index[row.custID].rows.push({
-                prodName: row.prodName,
-                quantity: row.quantity,
-                price: row.price
-            });
-        });
-
-        console.log(result);
-
-
         res.end(JSON.stringify(orders));
     })
         .catch(function(err) {
