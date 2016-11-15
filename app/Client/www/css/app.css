@@ -109,6 +109,10 @@ header{
 	font-size:18px;
 }
 
+.any, .in, .out{
+    display: inline-block;
+}
+
 .col{
 	display: table-cell;
 	padding:20px;

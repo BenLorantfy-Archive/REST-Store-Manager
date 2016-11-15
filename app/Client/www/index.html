@@ -71,7 +71,10 @@
 		<input class="textbox prodName" type="text" placeholder="Product Name">
 		<input class="textbox price" type="text" placeholder="Price">
 		<input class="textbox prodWeight" type="text" placeholder="Weight">
-		<label><input class="textbox inStock" type="checkbox">In Stock</label>
+		<!--<label><input class="textbox inStock" type="checkbox">In Stock</label>-->
+		<input type="radio" class="textbox inStock any" name="inStock" checked> Any<br>
+		<input type="radio" class="textbox inStock in" name="inStock"> In Stock<br>
+		<input type="radio" class="textbox inStock out" name="inStock"> Sold Out
         
 		<nav-item hotkey="1" label="Results" page="searchProductsResults"></nav-item>
 		<nav-item hotkey="2" label="Back" page="back"></nav-item>

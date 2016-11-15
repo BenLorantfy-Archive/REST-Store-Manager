@@ -130,14 +130,21 @@ app.controller('MainController', function($scope, $compile) {
             var prodName = $("#searchProductsPage .prodName").val();
             var price = $("#searchProductsPage .price").val();
             var prodWeight = $("#searchProductsPage .prodWeight").val();
-            var inStock = $("#searchProductsPage .inStock").is(':checked')  ? 1 : 0;
+            var any = $("#searchProductsPage .inStock.any").is(':checked');
+            var inStock = $("#searchProductsPage .inStock.in").is(':checked');
+            var outStock = $("#searchProductsPage .inStock.out").is(':checked');
+            // var inStock = $("#searchProductsPage .inStock").is(':checked') ? 1 : 0;
 
             var query = "?";
             if(prodID) query += "prodID=" + encodeURI(prodID) + "&";
             if(prodName) query += "prodName=" + encodeURI(prodName) + "&";
             if(price) query += "price=" + encodeURI(price) + "&";
             if(prodWeight) query += "prodWeight=" + encodeURI(prodWeight) + "&";
-            if(inStock) query += "inStock=" + encodeURI(inStock) + "&";
+            if(inStock) {
+                query += "inStock=" + encodeURI(1) + "&";
+            }else if(outStock) {
+                query += "inStock=" + encodeURI(0) + "&";
+            }
 
             $.request("GET","/products" + query).done(renderProducts);
 
