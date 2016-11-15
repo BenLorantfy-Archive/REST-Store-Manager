@@ -419,22 +419,86 @@ app.controller('MainController', function($scope, $compile) {
     })
 
     // [Update]
-//    $("#deleteCartPage .delete").click(function(){
-//        var orderID   = $("#deleteCartPage .orderID").val();
-//        var prodID    = $("#deleteCartPage .prodID").val();
-//
-//        var data = {
-//             orderID:orderID
-//            ,prodID:prodID
-//        }
-//
-//        $.restService.deleteCart(data, function(res){
-//                                    alert(JSON.stringify(res));
-//                                },
-//                                function(res){
-//                                    alert(JSON.stringify(res));
-//                                })
-//    })
+    $("#updateCustomerPage .update").click(function(){
+        var custID = $("#updateCustomerPage .custID").val();
+        var firstName = $("#updateCustomerPage .firstName").val();
+        var lastName = $("#updateCustomerPage .lastName").val();
+        var phoneNumber = $("#updateCustomerPage .phoneNumber").val();
+
+        var data = {
+             firstName:firstName
+            ,lastName:lastName
+            ,phoneNumber:phoneNumber
+        }
+
+        $.restService.updateCustomer(custID, data, function(res){
+                                    alert(JSON.stringify(res));
+                                },
+                                function(res){
+                                    alert(JSON.stringify(res));
+                                })
+    })
+
+    $("#updateProductPage .update").click(function(){
+        var prodID   = $("#updateProductPage .prodID").val();
+        var prodName = $("#updateProductPage .productName").val();
+        var price = $("#updateProductPage .price").val();
+        var prodWeight = $("#updateProductPage .weight").val();
+        var inStock = $("#updateProductPage .inStock").is(':checked')  ? 1 : 0;
+
+        var data = {
+             prodName:prodName
+            ,price:price
+            ,prodWeight:prodWeight
+            ,inStock:inStock
+        }
+
+        $.restService.updateProduct(prodID, data, function(res){
+                                    alert(JSON.stringify(res));
+                                },
+                                function(res){
+                                    alert(JSON.stringify(res));
+                                })
+    })
+
+    $("#updateOrderPage .update").click(function(){
+        var orderID   = $("#updateOrderPage .orderID").val();
+        var custID = $("#updateOrderPage .custID").val();
+        var poNumber = $("#updateOrderPage .poNumber").val();
+        var orderDate = $("#updateOrderPage .orderDate").val();
+
+        var data = {
+             custID:custID
+            ,poNumber:poNumber
+            ,orderDate:orderDate
+        }
+
+        $.restService.updateOrder(orderID, data, function(res){
+                                    alert(JSON.stringify(res));
+                                },
+                                function(res){
+                                    alert(JSON.stringify(res));
+                                })
+    })
+
+    $("#updateCartPage .update").click(function(){
+        var orderID   = $("#updateCartPage .orderID").val();
+        var prodID    = $("#updateCartPage .prodID").val();
+        var quantity = $("#updateCartPage .quanity").val();
+
+        var data = {
+             quantity:quantity
+        }
+
+        var id = orderID + "-" + prodID;
+
+        $.restService.updateCart(id, data, function(res){
+                                    alert(JSON.stringify(res));
+                                },
+                                function(res){
+                                    alert(JSON.stringify(res));
+                                })
+    })
 
 });
 

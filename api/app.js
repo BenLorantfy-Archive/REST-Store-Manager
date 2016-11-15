@@ -119,7 +119,7 @@ app.put("/customers/:custID", function(req,res) {
             phoneNumber:req.body.phoneNumber
         })
         .where("custID", req.params.custID )
-        ('Customer');
+        .into('Customer');
 
     query.then(function () {
         res.end(JSON.stringify({success: true}));
@@ -131,7 +131,6 @@ app.put("/customers/:custID", function(req,res) {
                 error: err.errno
             }));
         });
-
 })
 
 // [ Customer Delete ]
@@ -254,7 +253,6 @@ app.put("/products/:prodID", function(req,res) {
                 error: err.errno
             }));
         });
-
 })
 
 // [ Product Delete ]
@@ -600,8 +598,6 @@ app.delete("/carts/:cartID", function(req,res) {
 
 app.listen(1337, function () {
     console.log('Web server listening on port 1337...');
-
-
 });
 
 //process.on('SIGTERM', function () {
