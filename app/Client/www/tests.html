@@ -1,0 +1,46 @@
+<html>
+    <head>
+        <script src="
+https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+        <script src="js/lib/jquery-3.1.1.js"></script>
+        <script src="js/lib/request.js"></script>
+    </head>
+    <body>
+    
+    
+        <script>
+            $.request.host = "http://localhost:1337/";
+            
+            var currentTest = 0;
+            function assert(obj1, obj2){
+                if(_.isEqual(obj1, obj2)){
+                    console.log("Test " + currentTest + " passed");
+                    document.write("<div class='success'>Test " + currentTest + " passed</div>");
+                }else{
+                    console.error("Test " + currentTest + " failed");
+                    document.write("<div class='error'>Test " + currentTest + " failed</div>");
+                }
+            }
+            
+            // [ Test 1]
+            $.request("GET","/customers?firstName='Joe'").done(function(data){
+                currentTest++;
+                
+                assert(data, {
+                    a:3
+                });
+            });
+            
+            // [ Test 2 ]
+            $.request("GET","/customers?firstName='Joe'").done(function(){
+                currentTest++;
+                
+                assert({
+                    a:3
+                }, {
+                    a:3
+                });
+            });
+        </script>
+    </body>
+</html>
