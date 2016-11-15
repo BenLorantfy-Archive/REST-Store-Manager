@@ -312,26 +312,33 @@ app.get("/orders", function (req, res) {
 
     if (req.query.custID) {
         query.innerJoin('Customer', 'Order1.custID', 'Customer.custID')
+            .innerjoin('Cart', 'Order1.orderID', 'Cart.orderID')
+            .innerjoin('Product', 'Product.prodID', 'Cart.prodID')
         query.andWhere("Order1.custID", req.query.custID);
     }
 
     if(!req.query.custID) {
         if (req.query.firstName) {
             query.innerJoin('Customer', 'Order1.custID', 'Customer.custID')
+                .innerjoin('Cart', 'Order1.orderID', 'Cart.orderID')
+                .innerjoin('Product', 'Product.prodID', 'Cart.prodID')
             query.andWhere("Customer.firstName", req.query.firstName);
         }
 
         if (req.query.lastName) {
             query.innerJoin('Customer', 'Order1.custID', 'Customer.custID')
+                .innerjoin('Cart', 'Order1.orderID', 'Cart.orderID')
+                .innerjoin('Product', 'Product.prodID', 'Cart.prodID')
             query.andWhere("Customer.lastName", req.query.lastName);
         }
 
         if (req.query.phoneNumber) {
             query.innerJoin('Customer', 'Order1.custID', 'Customer.custID')
+                .innerjoin('Cart', 'Order1.orderID', 'Cart.orderID')
+                .innerjoin('Product', 'Product.prodID', 'Cart.prodID')
             query.andWhere("Customer.phoneNumber", req.query.phoneNumer);
         }
     }
-
 
     // console.log(query);
 
@@ -413,22 +420,37 @@ app.delete("/orders/:orderID", function(req,res) {
 app.get("/carts", function (req, res) {
     var query = db
         .select("orderID", "prodID", "quantity")
-        .from("Order1");
+        .from("Cart");
 
     if (req.query.orderID) {
-        query.andWhere("orderID",req.query.orderID);
+        query.where("orderID",req.query.orderID);
     }
 
     if (req.query.prodID) {
         query.andWhere("prodID",req.query.prodID);
     }
 
+    //if prodID AND orderID are provided, quantity is irrelevant
     if(!req.query.prodID && !req.query.orderID) {
         if (req.query.quantity) {
             query.andWhere("quantity", req.query.quantity);
         }
     }
 
+    if(!req.query.prodID){
+        if(req.query.prodName){
+            query.select("*")
+            query.innerJoin('Product', 'Product.prodID', 'Cart.prodID')
+            query.andWhere("Product.prodName", req.query.prodName);
+        }
+    }
+
+    if(req.query.custID){
+        query.select("*")
+        query.innerJoin('Order1', 'Order1.orderID', 'Cart.orderID')
+            .innerJoin('Customer', 'Order1.custID', 'Customer.custID')
+        query.andWhere("Order1.custID", req.query.custID);
+    }
     // console.log(query);
 
     query.then(function (carts) {
@@ -511,7 +533,7 @@ app.delete("/carts/:cartID", function(req,res) {
 
 
 // [ Listen for requests ]
-app.listen(80, function () {
+app.listen(8080, function () {
     console.log('Web server listening on port 80...');
 });
 
