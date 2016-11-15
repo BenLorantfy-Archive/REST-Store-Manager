@@ -798,35 +798,36 @@ app.delete("/orders/:orderID", function(req,res) {
 // [ Cart CRUD Functions*************************************************************** ]
 // [ Cart Search ]
 app.get("/carts", function (req, res) {
-	console.log('carts search: ');
-	console.log(req.query);
-	
+    console.log('carts search: ');
+    console.log(req.query);
+
     var query = db
-       // .select("orderID", "prodID", "quantity")
+    // .select("orderID", "prodID", "quantity")
         .select('*')
         .from("Cart");
 
     if (req.query.orderID) {
-        query.where("orderID",req.query.orderID);
+        query.where("orderID", req.query.orderID);
     }
 
     if (req.query.prodID) {
-        query.andWhere("prodID",req.query.prodID);
+        query.andWhere("prodID", req.query.prodID);
     }
 
     //if prodID AND orderID are provided, quantity is irrelevant
-    if(!req.query.prodID && !req.query.orderID) {
+    if (!req.query.prodID && !req.query.orderID) {
         if (req.query.quantity) {
             query.andWhere("quantity", req.query.quantity);
         }
     }
 
-    if(!req.query.prodID){
-        if(req.query.prodName)
+    if (!req.query.prodID) {
+        if (req.query.prodName) {
             query.innerJoin('Product', 'Product.prodID', 'Cart.prodID')
             query.andWhere("Product.prodName", req.query.prodName);
         }
     }
+
 
     if(req.query.custID){
         query.innerJoin('Order1', 'Order1.orderID', 'Cart.orderID')
