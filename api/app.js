@@ -1,3 +1,7 @@
+// SOA      -      Assignment 4
+// Prof     : Ed Barsalou
+// Students : Amshar Basheer, Grigory Kozyrev, Kyle Stevenson, Ben Lorantfy
+// Date     : 2016-11-14
 
 // [ Routing Library ]
 var express = require('express');
