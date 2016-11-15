@@ -41,16 +41,20 @@ app.controller('MainController', function($scope, $compile) {
                 var totalCount = 0;
                 var totalWeight = 0;
                 $.each(rows,function(i,row){
-                    totalCount += row.quantity;
-                    totalWeight += row.quantity * row.prodWeight;
+                    if(row.inStock){
+                        totalCount += row.quantity;
+                        totalWeight += row.quantity * row.prodWeight;                        
+                    }
+
                     subtotal += row.quantity * row.price;
                     $("#purchaseOrderPage .items").append(
                         "<tr class='item'>" +
                             "<td>" + row.prodID + "</td>" +
-                            "<td>" + row.prodName + "</td>" + 
+                            "<td>" + row.prodName + (row.inStock ? "" : " (Out Of Stock)") + "</td>" + 
                             "<td>" + row.quantity + "</td>" +
                             "<td>$" + row.price + "</td>" +
                             "<td>" + row.prodWeight + " kg</td>" +
+                        
                         "</tr>"
                     );
                 })
