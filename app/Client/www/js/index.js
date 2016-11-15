@@ -24,6 +24,48 @@ app.controller('MainController', function($scope, $compile) {
 //            }
 
 
+            $.request("GET","/orders/" + currPurchaseOrderID).done(function(rows){
+                $("#purchaseOrderPage .custID").text(rows[0].custID);
+                $("#purchaseOrderPage .custName").text(rows[0].lastName + ", " + rows[0].firstName);
+                $("#purchaseOrderPage .phone").text(rows[0].phoneNumber);
+                $("#purchaseOrderPage .date").text(rows[0].orderDate);
+                $("#purchaseOrderPage .poNumber").text(rows[0].poNumber);
+                
+                // phone
+                
+                // Remove old items
+                $("#purchaseOrderPage .item").remove();
+                
+                // Add all the new ones
+                var subtotal = 0;
+                var totalCount = 0;
+                var totalWeight = 0;
+                $.each(rows,function(i,row){
+                    totalCount += row.quantity;
+                    totalWeight += row.quantity * row.prodWeight;
+                    subtotal += row.quantity * row.price;
+                    $("#purchaseOrderPage .items").append(
+                        "<tr class='item'>" +
+                            "<td>" + row.prodID + "</td>" +
+                            "<td>" + row.prodName + "</td>" + 
+                            "<td>" + row.quantity + "</td>" +
+                            "<td>$" + row.price + "</td>" +
+                            "<td>" + row.prodWeight + " kg</td>" +
+                        "</tr>"
+                    );
+                })
+                
+                var tax = subtotal * 0.13;
+                var total = tax + subtotal;
+                
+                $("#purchaseOrderPage .subtotal").text("$" + Math.round(subtotal * 100) / 100);
+                $("#purchaseOrderPage .tax").text("$" + Math.round(tax * 100) / 100);
+                $("#purchaseOrderPage .total").text("$" + Math.round(total * 100) / 100);
+                
+                $("#purchaseOrderPage .totalCount").text(totalCount);
+                $("#purchaseOrderPage .totalWeight").text(Math.round(totalWeight * 100) / 100 + " kg");
+                
+            });
 
         },
 		searchCustomersResults: function(){
@@ -175,7 +217,7 @@ app.controller('MainController', function($scope, $compile) {
         }
 	};
 
-
+    var currPurchaseOrderID = 0;
     var currPage = "";
     function addError(message){
         
@@ -335,6 +377,7 @@ app.controller('MainController', function($scope, $compile) {
 		}
 
         $("body").on("click", ".createPO", function(){
+            currPurchaseOrderID = $(this).data("id");
             navigate(currPage,"purchaseOrder");
         });
 	})();

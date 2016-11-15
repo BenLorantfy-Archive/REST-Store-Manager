@@ -380,6 +380,28 @@ app.get("/orders", function (req, res) {
         });
 })
 
+app.get("/orders/:orderID", function (req, res) {
+    var id = req.params.orderID;
+    var query = db
+        .select('*')
+        .from("Cart")
+        .where("Cart.orderID", id);
+    
+    query.leftJoin('Order1','Cart.orderID','Order1.orderID');
+    query.leftJoin('Product', 'Cart.prodID', 'Product.prodID');
+    query.leftJoin('Customer','Order1.custID','Customer.custID'); 
+
+    query.then(function (orders) {
+        res.end(JSON.stringify(orders));
+    })
+    .catch(function(err) {
+        res.end(JSON.stringify({
+            success: false,
+            error: err.errno
+        }));
+    });
+})
+
 // [ Order Insert ]
 app.post("/orders", function (req, res) {
 	console.log('orders insert: ');
@@ -582,8 +604,8 @@ app.delete("/carts/:cartID", function(req,res) {
 
 // [ Listen for requests ]
 
-app.listen(8080, function () {
-    console.log('Web server listening on port 80...');
+app.listen(1337, function () {
+    console.log('Web server listening on port 1337...');
 
 
 });
