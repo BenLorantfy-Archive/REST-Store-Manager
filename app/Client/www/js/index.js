@@ -276,19 +276,7 @@ app.controller('MainController', function($scope, $compile) {
 
     var currPurchaseOrderID = 0;
     var currPage = "";
-    function addError(message){
-        
-        $(".error").append($("<div>" + message + "</div>"));
-    
-        console.log(currPage);
-        console.log($("#" + currPage + "Page .error"));
-        $("#" + currPage + "Page .error").each(function(){
-            if(!$(this).is(":visible")){
-                $(this).slideToggle();
-            }
-        });
-    }
-    
+
     
 	// [ Navigation ]
 	(function navigation(){
@@ -385,8 +373,6 @@ app.controller('MainController', function($scope, $compile) {
 		function navigate(fromPage,toPage){
             if(toPage=="none") return;
             
-            $(".error").empty().hide();
-            
 			if(toPage == "back"){
 				pageStack.pop();
 				pageLabelStack.pop();
@@ -461,55 +447,12 @@ app.controller('MainController', function($scope, $compile) {
     })
 
     $("#insertProductPage .insert").click(function(){
-        $(".error").empty();
         
         var hasErrors = false;
         var prodName = $("#insertProductPage .productName").val();
         var price = $("#insertProductPage .price").val();
         var prodWeight = $("#insertProductPage .weight").val();
         var inStock = $("#insertProductPage .inStock").is(':checked') ? 1 : 0;
-
-        /*if(prodName == ""){
-            hasErrors = true;
-            addError("Product name is required");           
-        }else{
-             if(prodName.length > 100){
-                hasErrors = true;
-                addError("Product name must be less than 100 charachters");
-            }           
-        }
-
-        if(price == ""){
-            hasErrors = true;
-            addError("Price is required");           
-        }else{
-            if(isNaN(price)){
-                hasErrors = true;
-                addError("Price must be a valid number");
-            }else{
-                if(price < 0){
-                    hasErrors = true;
-                    addError("Price must be positive");
-                }   
-            }           
-        }
-        
-        if(prodWeight == ""){
-            hasErrors = true;
-            addError("Weight is required");           
-        }else{
-            if(isNaN(prodWeight)){
-                hasErrors = true;
-                addError("Weight must be a valid number");
-            }else{
-                if(prodWeight <= 0){
-                    hasErrors = true;
-                    addError("Weight must be positive");
-                }   
-            }          
-        }
-        
-        if(hasErrors) return;*/
         
         var data = {
              prodName:prodName
@@ -593,40 +536,6 @@ app.controller('MainController', function($scope, $compile) {
         var price = $("#updateProductPage .price").val();
         var prodWeight = $("#updateProductPage .weight").val();
         var inStock = $("#updateProductPage .inStock").is(':checked')  ? 1 : 0;
-
-        /*if(prodName != ""){
-            if(prodName.length > 100){
-                hasErrors = true;
-                addError("Product name must be less than 100 charachters");
-            }
-        }
-        
-        if(price != ""){
-            if(isNaN(price)){
-                hasErrors = true;
-                addError("Price must be a valid number");
-            }else{
-                if(price < 0){
-                    hasErrors = true;
-                    addError("Price must be positive");
-                }   
-            }            
-        }
-
-        if(prodWeight != ""){
-            if(isNaN(prodWeight)){
-                hasErrors = true;
-                addError("Weight must be a valid number");
-            }else{
-                if(prodWeight <= 0){
-                    hasErrors = true;
-                    addError("Weight must be positive");
-                }   
-            }            
-        }
-
-        
-        if(hasErrors) return;*/
         
         var data = {
              prodName:prodName
