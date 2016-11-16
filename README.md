@@ -5,7 +5,7 @@ An assignment for Service Oriented Architecture to create a retail store manager
 This project uses the following technologies:
 - **Client**
   - Written in browser JS/HTML/CSS but running in a JavaFX webview
-  - Uses Angular for templating
+  - Uses [Angular](https://angularjs.org/) for templating
   - Uses jQuery for DOM manipulation and AJAX
 - **Backend** 
   - Written in node.js
